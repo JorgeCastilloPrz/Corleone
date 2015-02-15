@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="fab_primary">#F44336</color>
+    <color name="fab_primary_pressed">#E53935</color>
+    <color name="fab_ripple">#EF5350</color>
+    <color name="game_grid_item_text_color">#fff</color>
+</resources>

@@ -1,0 +1,17 @@
+<!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <fragment
+        android:id="@+id/gameListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp"
+        class="com.github.jorgecastilloprz.easymvp.mvp.views.GameListFragment"/>
+
+    <include android:id="@+id/mainToolbar" layout="@layout/toolbar"/>
+    
+</FrameLayout>
