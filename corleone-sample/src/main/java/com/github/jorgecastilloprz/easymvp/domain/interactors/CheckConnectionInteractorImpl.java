@@ -17,10 +17,9 @@ package com.github.jorgecastilloprz.easymvp.domain.interactors;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-import com.github.jorgecastilloprz.easymvp.executor.InteractorExecutor;
-import com.github.jorgecastilloprz.easymvp.executor.MainThread;
-
+import com.github.jorgecastilloprz.corleone.annotations.Dispatcher;
+import com.github.jorgecastilloprz.corleone.annotations.Execution;
+import com.github.jorgecastilloprz.corleone.annotations.MainThread;
 import javax.inject.Inject;
 
 /**
@@ -31,55 +30,47 @@ import javax.inject.Inject;
  */
 public class CheckConnectionInteractorImpl implements CheckConnectionInteractor {
 
-    private InteractorExecutor executor;
-    private ConnectivityManager connectivityManager;
-    private MainThread mainThread;
+  private ConnectivityManager connectivityManager;
 
-    private Callback callback;
-    
-    @Inject
-    CheckConnectionInteractorImpl(InteractorExecutor executor, MainThread mainThread, ConnectivityManager connectivityManager) {
-        this.executor = executor;
-        this.mainThread = mainThread;
-        this.connectivityManager = connectivityManager;
-    }
+  private Callback callback;
 
-    @Override
-    public void execute(Callback callback) {
-        if (callback == null) {
-            throw new IllegalArgumentException("Callback must not be null or response would not be able to be notified.");
-        }
-        this.callback = callback;
-        executor.run(this);
-    }
-    
-    @Override
-    public void run() {
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        
-        if (isConnected) {
-            notifyOnConnectionAvaiable();   
-        } else {
-            notifyOnConnectionError();
-        }
-    }
+  @Inject CheckConnectionInteractorImpl(ConnectivityManager connectivityManager) {
+    this.connectivityManager = connectivityManager;
+  }
 
-    private void notifyOnConnectionAvaiable() {
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onConnectionAvaiable();     
-            }
-        });
+  @Dispatcher @Override
+  public void execute(Callback callback) {
+    if (callback == null) {
+      throw new IllegalArgumentException(
+          "Callback must not be null or response would not be able to be notified.");
     }
+    this.callback = callback;
+  }
 
-    private void notifyOnConnectionError() {
-        mainThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onConnectionError();
-            }
-        });
+  @Execution @Override
+  public void run() {
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (isConnected) {
+      notifyOnConnectionAvaiable();
+    } else {
+      notifyOnConnectionError();
     }
+  }
+
+  @MainThread
+  private void notifyOnConnectionAvaiable() {
+    //mainThread.post(new Runnable() {
+    //  @Override
+    //  public void run() {
+    callback.onConnectionAvaiable();
+    //  }
+    //});
+  }
+
+  @MainThread
+  private void notifyOnConnectionError() {
+    callback.onConnectionError();
+  }
 }

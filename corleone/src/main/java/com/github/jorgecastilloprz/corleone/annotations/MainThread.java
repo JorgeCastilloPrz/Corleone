@@ -22,12 +22,12 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Method flagged with this annotation will be executed in a thread managed by thread pool executor
- * as soon as the @Dispatcher method finishes.
- * Retention type is RUNTIME because we need this annotation to survive beyond compilation time.
+ * This annotation will be used by the user when he wants to get its annotated method to run on 
+ * main thread. Needed code will be generated in compilation time.
+ * Retention type is RUNTIME because we need this annotation to survive beyond compilation time
  * 
  * @author Jorge Castillo Pérez
  */
 @Retention(RUNTIME) @Target(METHOD)
-public @interface Execution {
+public @interface MainThread {
 }

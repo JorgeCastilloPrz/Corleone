@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.annotations;
+package com.github.jorgecastilloprz.corleone.validator;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
+import javax.annotation.processing.RoundEnvironment;
 
 /**
- * Method flagged with this annotation will be executed in a thread managed by thread pool executor
- * as soon as the @Dispatcher method finishes.
- * Retention type is RUNTIME because we need this annotation to survive beyond compilation time.
- * 
  * @author Jorge Castillo Pérez
  */
-@Retention(RUNTIME) @Target(METHOD)
-public @interface Execution {
+public abstract class AnnotationValidator {
+
+  protected RoundEnvironment roundEnvironment;
+  protected ErrorMessager errorMessager;
+
+  public AnnotationValidator(RoundEnvironment roundEnvironment, ErrorMessager errorMessager) {
+    this.roundEnvironment = roundEnvironment;
+    this.errorMessager = errorMessager;
+  }
+
+  public abstract boolean validate();
 }
