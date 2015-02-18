@@ -1,11 +1,18 @@
 Corleone [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-EasyMVP-brightgreen.svg?style=flat)](https://android-arsenal.com/details/3/1515)
 ===========================================================================================================================================================
-Annotation processor library created to generate a simplified java threadpool execution logic during compile time.
+Java annotation processor library created to generate a simplified java threadpool execution logic during compile time.
 
-* ```@Interactor``` annotation will be used on top of the Interactor class to allow the processor to inject generated code on it.
 * ```@Dispatcher``` annotated method will be used by the user to initiate the execution. The processor will generate and inject the code into the last line of the method to start the execution by thread pool executor.
 * ```@Execution``` annotation will be on top of the method user wants to set the use case logic into. The code into the annotated method will be the code executed by thread pool generated instance.
 * ```@MainThread``` flagged methods will run its logic into the Android main looper thread. It will be often used to dispatch callback methods to allow the app interface to react. 
+
+Testing
+-------
+The project has been created by using TDD. Following libraries are being used:
+
+* ```Compile-testing```: Google testing framework to allow testing java sources @ javac compile time.
+* ```Truth```: Google library to "humanize" language of JUnit testing assertions.
+* ```jUnit```: Base for all the project unit tests.
 
 Developed By
 ------------
