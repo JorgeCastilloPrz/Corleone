@@ -19,6 +19,9 @@ import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
 import javax.annotation.processing.RoundEnvironment;
 
 /**
+ * This class defines a simple annotation validator behavior and hides minimal construction logic 
+ * to it's descendants.
+ * *
  * @author Jorge Castillo Pérez
  */
 public abstract class AnnotationValidator {

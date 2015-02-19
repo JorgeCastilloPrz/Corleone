@@ -25,6 +25,9 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 
 /**
+ * AnnotationValidator implementation based on a single instance of @Dispatcher and @Execution 
+ * annotations per class criteria.
+ * * 
  * @author Jorge Castillo Pérez
  */
 public class SingleAnnotationInstanceValidator extends AnnotationValidator {
