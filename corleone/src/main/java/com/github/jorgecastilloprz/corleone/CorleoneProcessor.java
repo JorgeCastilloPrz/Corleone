@@ -15,12 +15,14 @@
  */
 package com.github.jorgecastilloprz.corleone;
 
-import com.github.jorgecastilloprz.corleone.annotations.Dispatcher;
 import com.github.jorgecastilloprz.corleone.annotations.Execution;
-import com.github.jorgecastilloprz.corleone.annotations.MainThread;
+import com.github.jorgecastilloprz.corleone.annotations.Job;
+import com.github.jorgecastilloprz.corleone.annotations.Rule;
 import com.github.jorgecastilloprz.corleone.messager.CorleoneErrorMessager;
 import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
 import com.github.jorgecastilloprz.corleone.validator.AnnotationValidator;
+import com.github.jorgecastilloprz.corleone.validator.ClassAnnotationValidator;
+import com.github.jorgecastilloprz.corleone.validator.MethodAnnotationValidator;
 import com.github.jorgecastilloprz.corleone.validator.SingleAnnotationInstanceValidator;
 import com.google.auto.service.AutoService;
 import java.util.LinkedHashSet;
@@ -48,7 +50,10 @@ public class CorleoneProcessor extends AbstractProcessor {
   private Types typeUtils;
   private Filer filer;
 
-  private AnnotationValidator annotationValidator;
+  private AnnotationValidator singleAnnotationValidator;
+  private AnnotationValidator jobClassAnnotationValidator;
+  private AnnotationValidator ruleClassAnnotationValidator;
+  private AnnotationValidator methodAnnotationValidator;
   private ErrorMessager errorMessager;
 
   @Override public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -74,17 +79,27 @@ public class CorleoneProcessor extends AbstractProcessor {
    */
   @Override public Set<String> getSupportedAnnotationTypes() {
     Set<String> supportTypes = new LinkedHashSet<>();
-    supportTypes.add(Dispatcher.class.getCanonicalName());
     supportTypes.add(Execution.class.getCanonicalName());
-    supportTypes.add(MainThread.class.getCanonicalName());
+    supportTypes.add(Job.class.getCanonicalName());
+    supportTypes.add(Rule.class.getCanonicalName());
     return supportTypes;
   }
 
   @Override public boolean process(Set<? extends TypeElement> typeElements,
       RoundEnvironment roundEnvironment) {
-    
-    annotationValidator = new SingleAnnotationInstanceValidator(roundEnvironment, errorMessager);
-    if (!annotationValidator.validate()) {
+
+    jobClassAnnotationValidator =
+        new ClassAnnotationValidator(roundEnvironment, errorMessager, Job.class);
+    ruleClassAnnotationValidator =
+        new ClassAnnotationValidator(roundEnvironment, errorMessager, Rule.class);
+    methodAnnotationValidator = new MethodAnnotationValidator(roundEnvironment, errorMessager);
+    singleAnnotationValidator =
+        new SingleAnnotationInstanceValidator(roundEnvironment, errorMessager);
+
+    if (jobClassAnnotationValidator.validate()
+        && ruleClassAnnotationValidator.validate()
+        && methodAnnotationValidator.validate()
+        && !singleAnnotationValidator.validate()) {
       return false;
     }
     

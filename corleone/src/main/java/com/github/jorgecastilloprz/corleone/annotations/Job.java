@@ -18,16 +18,16 @@ package com.github.jorgecastilloprz.corleone.annotations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /**
- * This annotation will be used by the user when he wants to get its annotated method to run on 
- * main thread. Needed code will be generated in compilation time.
- * Retention type is RUNTIME because we need this annotation to survive beyond compilation time
- * 
+ * Every class marked with this annotation would be trated as a Job for the library. Jobs are the
+ * concatenable execution units. Jobs can contain multiple @Rules.
+ *
  * @author Jorge Castillo Pérez
  */
-@Retention(RUNTIME) @Target(METHOD)
-public @interface MainThread {
+@Retention(CLASS) @Target(TYPE)
+public @interface Job {
+  Rule[] value();
 }

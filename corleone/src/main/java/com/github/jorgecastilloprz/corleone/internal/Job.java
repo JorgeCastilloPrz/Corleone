@@ -13,22 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.annotations;
+package com.github.jorgecastilloprz.corleone.internal;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
+import javax.lang.model.element.ExecutableElement;
 
 /**
- * Method flagged with this annotation will be executed in a thread managed by thread pool executor.
- *
- * Retention type is SOURCE because we do not need this annotation to survive beyond compilation time.
- * 
  * @author Jorge Castillo Pérez
  */
-@Retention(SOURCE) @Target(METHOD)
-public @interface Execution {
+public class Job {
+
+  public ExecutableElement getExecutionMethod() {
+    return null;
+  }
 }

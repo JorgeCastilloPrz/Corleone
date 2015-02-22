@@ -15,7 +15,6 @@
  */
 package com.github.jorgecastilloprz.corleone.validator;
 
-import com.github.jorgecastilloprz.corleone.annotations.Dispatcher;
 import com.github.jorgecastilloprz.corleone.annotations.Execution;
 import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
 import javax.annotation.processing.RoundEnvironment;
@@ -25,9 +24,9 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 
 /**
- * AnnotationValidator implementation based on a single instance of @Dispatcher and @Execution 
+ * AnnotationValidator implementation based on a single instance of @Execution
  * annotations per class criteria.
- * * 
+ *
  * @author Jorge Castillo Pérez
  */
 public class SingleAnnotationInstanceValidator extends AnnotationValidator {
@@ -51,20 +50,11 @@ public class SingleAnnotationInstanceValidator extends AnnotationValidator {
 
   private boolean checkMethodAnnotationsForThisRoot(TypeElement rootTypeElement) {
 
-    boolean dispatcherFoundOnThisClass = false;
     boolean executionFoundOnThisClass = false;
 
     for (ExecutableElement method : ElementFilter.methodsIn(
         rootTypeElement.getEnclosedElements())) {
 
-      if (method.getAnnotation(Dispatcher.class) != null) {
-        if (dispatcherFoundOnThisClass) {
-          errorMessager.multipleAnnotationError(Dispatcher.class.getName());
-          return true;
-        } else {
-          dispatcherFoundOnThisClass = true;
-        }
-      }
       if (method.getAnnotation(Execution.class) != null) {
         if (executionFoundOnThisClass) {
           errorMessager.multipleAnnotationError(Execution.class.getName());

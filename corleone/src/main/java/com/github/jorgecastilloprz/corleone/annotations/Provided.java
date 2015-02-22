@@ -18,17 +18,20 @@ package com.github.jorgecastilloprz.corleone.annotations;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * Method flagged with this annotation will be executed in a thread managed by thread pool executor.
+ * Field flagged with this annotation will need to be provided by previous job or the job chain
+ * starting class.
  *
- * Retention type is SOURCE because we do not need this annotation to survive beyond compilation time.
+ * Retention type is RUNTIME because we need this annotation to survive beyond compilation time.
+ * This one is just allowed to be used on fields.
  * 
  * @author Jorge Castillo Pérez
  */
-@Retention(SOURCE) @Target(METHOD)
-public @interface Execution {
+@Retention(RUNTIME) @Target(FIELD)
+public @interface Provided {
 }

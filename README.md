@@ -3,7 +3,9 @@ Corleone [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Easy
 
 <img alt="Corleone Java APT" src="./art/corleone.png" />
 
-Java annotation processor library created to generate a simplified java threadpool execution logic during compile time.
+Java annotation processor library created to generate a simplified java threadpool execution logic during compile time. The main purpose of this APT is autodidact.
+It does not avoid the users to write plenty of boilerplate code, but just a little bit. Anyways, it is a good starting point, as we usually dont want to
+write the same threadpool logic on every app we create, as we don't like to be forced to inject thread executor or MainThread implementation on every interactor.
 
 * ```@Dispatcher``` annotated method will be used by the user to initiate the execution. The processor will generate and inject the code into the last line of the method to start the execution by thread pool executor.
 * ```@Execution``` annotation will be on top of the method user wants to set the use case logic into. The code into the annotated method will be the code executed by thread pool generated instance.

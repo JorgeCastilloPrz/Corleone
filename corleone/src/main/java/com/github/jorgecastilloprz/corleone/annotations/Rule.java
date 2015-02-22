@@ -15,18 +15,29 @@
  */
 package com.github.jorgecastilloprz.corleone.annotations;
 
+import com.github.jorgecastilloprz.corleone.internal.EmptyDefaultClass;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /**
- * Method flagged with this annotation will dispatch the execution method at the end.
- * Retention type is source because we dont need this annotation to survive beyond compilation time.
- * 
+ * This annotation must be used inside of a Job annotation. It defines a Job rule to apply on
+ * compilation time. A single @Job annotation can contain multiple @Rule annotations.
+ *
  * @author Jorge Castillo Pérez
  */
-@Retention(SOURCE) @Target(METHOD)
-public @interface Dispatcher {
+@Retention(CLASS) @Target(TYPE)
+public @interface Rule {
+
+  /**
+   * Jobs will be grouped by this field
+   */
+  String context();
+
+  /**
+   * ClassName of the previous job in job chain. Its an optional param
+   */
+  Class previousJob() default EmptyDefaultClass.class;
 }

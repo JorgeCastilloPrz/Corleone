@@ -26,8 +26,7 @@ import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 /**
  * Tests to assure annotation validation behavior. Based on a compile-testing / truth
- * testing framework mix. This class defines three tests to check all the validation possibilities
- * out.
+ * testing framework mix.
  * *
  * Compile-testing is a google library that allows the user to write mock java sources for using
  * them as input and output of testing subjects. It is a useful way to run tests at javac
@@ -44,42 +43,83 @@ public class SingleAnnotationInstanceValidatorTest {
 
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n')
         .join("package test;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Dispatcher;",
+            "import com.github.jorgecastilloprz.corleone.Corleone;",
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
-            "import com.github.jorgecastilloprz.corleone.annotations.MainThread;",
-            "public class Test {", "  @Dispatcher", "  public void execute() {",
-            "    System.out.print(\"Testing dispatcher method!\");", "  }", "  @Execution",
-            "  public void run() {", "    System.out.print(\"Testing execution method!\");", "  }",
-            "  @MainThread", "  private void notifyOnConnectionAvaiable() {",
-            "    //mainThread.post(new Runnable() {", "    //  @Override",
-            "    //  public void run() {", "    //callback.onConnectionAvaiable();", "    //  }",
-            "    //});", "  }", "  @MainThread", "  private void notifyOnConnectionError() {",
-            "  }", "}"));
+            "import com.github.jorgecastilloprz.corleone.annotations.Job;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Provided;",
+            "@Job({",
+            "    @Rule(context = \"ObtainGames\"),",
+            "    @Rule(context = \"BookmarkGame\"),",
+            "    @Rule(context = \"CommentGame\")",
+            "})",
+            "public class Test {",
+            "\n",
+            "   @Provided String providedString;",
+            "   public Test() {",
+            "       Corleone.provideParams();",
+            "   }",
+            "   @Execution",
+            "   public void run() {",
+            "       notifyNetworkStatus(true);",
+            "   }",
+            "   private void notifyNetworkStatus(final boolean networkAvailable) {",
+            "       //mainThread.post(new Runnable() {",
+            "       //    @Override",
+            "       //    public void run() {",
+            "       //      callback.notifyNetworkStatus(networkAvailable);",
+            "       //    }",
+            "      //});",
+            "      if (networkAvailable) {",
+            "          Corleone.keepGoing();",
+            "      }",
+            "   }",
+            "}"));
 
     //Truth assertion
     Truth.ASSERT.about(javaSource())
         .that(source)
         .processedWith(corleoneProcessors())
         .compilesWithoutError();
-    //.and()
-    //.generatesSources(expectedSource);
   }
 
   @Test public void wrongExecutionCountTest() {
 
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n')
         .join("package test;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Dispatcher;",
+            "import com.github.jorgecastilloprz.corleone.Corleone;",
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
-            "import com.github.jorgecastilloprz.corleone.annotations.MainThread;",
-            "public class Test {", "  @Execution", "  public void execute() {",
-            "    System.out.print(\"Testing dispatcher method!\");", "  }", "  @Execution",
-            "  public void run() {", "    System.out.print(\"Testing execution method!\");", "  }",
-            "  @MainThread", "  private void notifyOnConnectionAvaiable() {",
-            "    //mainThread.post(new Runnable() {", "    //  @Override",
-            "    //  public void run() {", "    //callback.onConnectionAvaiable();", "    //  }",
-            "    //});", "  }", "  @MainThread", "  private void notifyOnConnectionError() {",
-            "  }", "}"));
+            "import com.github.jorgecastilloprz.corleone.annotations.Job;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Provided;",
+            "@Job({",
+            "    @Rule(context = \"ObtainGames\"),",
+            "    @Rule(context = \"BookmarkGame\"),",
+            "    @Rule(context = \"CommentGame\")",
+            "})",
+            "public class Test {",
+            "\n",
+            "   @Provided String providedString;",
+            "   public Test() {",
+            "       Corleone.provideParams();",
+            "   }",
+            "   @Execution",
+            "   public void run() {",
+            "       notifyNetworkStatus(true);",
+            "   }",
+            "   @Execution",
+            "   private void notifyNetworkStatus(final boolean networkAvailable) {",
+            "       //mainThread.post(new Runnable() {",
+            "       //    @Override",
+            "       //    public void run() {",
+            "       //      callback.notifyNetworkStatus(networkAvailable);",
+            "       //    }",
+            "      //});",
+            "      if (networkAvailable) {",
+            "          Corleone.keepGoing();",
+            "      }",
+            "   }",
+            "}"));
 
     //Truth assertion
     Truth.ASSERT.about(javaSource())
@@ -88,21 +128,86 @@ public class SingleAnnotationInstanceValidatorTest {
         .failsToCompile();
   }
 
-  @Test public void wrongDispatcherCountTest() {
+  @Test public void wrongJobPositionTest() {
 
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n')
         .join("package test;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Dispatcher;",
+            "import com.github.jorgecastilloprz.corleone.Corleone;",
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
-            "import com.github.jorgecastilloprz.corleone.annotations.MainThread;",
-            "public class Test {", "  @Dispatcher", "  public void execute() {",
-            "    System.out.print(\"Testing dispatcher method!\");", "  }", "  @Dispatcher",
-            "  public void run() {", "    System.out.print(\"Testing execution method!\");", "  }",
-            "  @MainThread", "  private void notifyOnConnectionAvaiable() {",
-            "    //mainThread.post(new Runnable() {", "    //  @Override",
-            "    //  public void run() {", "    //callback.onConnectionAvaiable();", "    //  }",
-            "    //});", "  }", "  @MainThread", "  private void notifyOnConnectionError() {",
-            "  }", "}"));
+            "import com.github.jorgecastilloprz.corleone.annotations.Job;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Provided;",
+            "@Job({",
+            "    @Rule(context = \"ObtainGames\"),",
+            "    @Rule(context = \"BookmarkGame\"),",
+            "    @Rule(context = \"CommentGame\")",
+            "})",
+            "public class Test {",
+            "\n",
+            "   @Job String providedString;",
+            "   public Test() {",
+            "       Corleone.provideParams();",
+            "   }",
+            "   public void run() {",
+            "       notifyNetworkStatus(true);",
+            "   }",
+            "   @Execution",
+            "   private void notifyNetworkStatus(final boolean networkAvailable) {",
+            "       //mainThread.post(new Runnable() {",
+            "       //    @Override",
+            "       //    public void run() {",
+            "       //      callback.notifyNetworkStatus(networkAvailable);",
+            "       //    }",
+            "      //});",
+            "      if (networkAvailable) {",
+            "          Corleone.keepGoing();",
+            "      }",
+            "   }",
+            "}"));
+
+    //Truth assertion
+    Truth.ASSERT.about(javaSource())
+        .that(source)
+        .processedWith(corleoneProcessors())
+        .failsToCompile();
+  }
+
+  @Test public void wrongRulePositionTest() {
+
+    JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n')
+        .join("package test;",
+            "import com.github.jorgecastilloprz.corleone.Corleone;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Job;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Provided;",
+            "@Job({",
+            "    @Rule(context = \"ObtainGames\"),",
+            "    @Rule(context = \"BookmarkGame\"),",
+            "    @Rule(context = \"CommentGame\")",
+            "})",
+            "public class Test {",
+            "\n",
+            "   @Rule String providedString;",
+            "   public Test() {",
+            "       Corleone.provideParams();",
+            "   }",
+            "   public void run() {",
+            "       notifyNetworkStatus(true);",
+            "   }",
+            "   @Execution",
+            "   private void notifyNetworkStatus(final boolean networkAvailable) {",
+            "       //mainThread.post(new Runnable() {",
+            "       //    @Override",
+            "       //    public void run() {",
+            "       //      callback.notifyNetworkStatus(networkAvailable);",
+            "       //    }",
+            "      //});",
+            "      if (networkAvailable) {",
+            "          Corleone.keepGoing();",
+            "      }",
+            "   }",
+            "}"));
 
     //Truth assertion
     Truth.ASSERT.about(javaSource())
