@@ -22,14 +22,14 @@ import javax.lang.model.element.ElementKind;
 /**
  * @author Jorge Castillo Pérez
  */
-public class MethodAnnotationValidator extends RightPlaceAnnotationValidator {
+public class FieldAnnotationValidator extends RightPlaceAnnotationValidator {
 
-  public MethodAnnotationValidator(RoundEnvironment roundEnvironment, ErrorMessager errorMessager,
+  public FieldAnnotationValidator(RoundEnvironment roundEnvironment, ErrorMessager errorMessager,
       Class annotation) {
     super(roundEnvironment, errorMessager, annotation);
   }
 
   @Override protected ElementKind getElementKind() {
-    return ElementKind.METHOD;
+    return ElementKind.FIELD;
   }
 }

@@ -15,39 +15,21 @@
  */
 package com.github.jorgecastilloprz.corleone.validator;
 
-import com.github.jorgecastilloprz.corleone.annotations.Job;
 import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
-import java.util.Set;
 import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public class ClassAnnotationValidator extends AnnotationValidator {
-
-  private Set<? extends Element> annotatedElements;
-  private Class annotation;
+public class ClassAnnotationValidator extends RightPlaceAnnotationValidator {
 
   public ClassAnnotationValidator(RoundEnvironment roundEnvironment, ErrorMessager errorMessager,
       Class annotation) {
-    super(roundEnvironment, errorMessager);
-    this.annotation = annotation;
+    super(roundEnvironment, errorMessager, annotation);
   }
 
-  @Override public boolean validate() {
-    annotatedElements = roundEnvironment.getElementsAnnotatedWith(annotation);
-    return validateElements(annotatedElements, annotation.getSimpleName());
-  }
-
-  private boolean validateElements(Set<? extends Element> elementsToValidate, String annotation) {
-    for (Element currentElement : elementsToValidate) {
-      if (currentElement.getKind() != ElementKind.CLASS) {
-        errorMessager.error("@%s annotation must be used to qualify classes.", annotation);
-        return false;
-      }
-    }
-    return true;
+  @Override protected ElementKind getElementKind() {
+    return ElementKind.CLASS;
   }
 }

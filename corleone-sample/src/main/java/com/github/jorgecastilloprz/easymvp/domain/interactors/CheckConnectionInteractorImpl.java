@@ -17,9 +17,8 @@ package com.github.jorgecastilloprz.easymvp.domain.interactors;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import com.github.jorgecastilloprz.corleone.annotations.Dispatcher;
 import com.github.jorgecastilloprz.corleone.annotations.Execution;
-import com.github.jorgecastilloprz.corleone.annotations.MainThread;
+import com.github.jorgecastilloprz.easymvp.executor.MainThread;
 import javax.inject.Inject;
 
 /**
@@ -31,14 +30,16 @@ import javax.inject.Inject;
 public class CheckConnectionInteractorImpl implements CheckConnectionInteractor {
 
   private ConnectivityManager connectivityManager;
+  private MainThread mainThread;
 
   private Callback callback;
 
-  @Inject CheckConnectionInteractorImpl(ConnectivityManager connectivityManager) {
+  @Inject CheckConnectionInteractorImpl(ConnectivityManager connectivityManager, MainThread mainThread) {
     this.connectivityManager = connectivityManager;
+    this.mainThread = mainThread;
   }
 
-  @Dispatcher @Override
+  @Override
   public void execute(Callback callback) {
     if (callback == null) {
       throw new IllegalArgumentException(
@@ -50,6 +51,7 @@ public class CheckConnectionInteractorImpl implements CheckConnectionInteractor 
   @Execution @Override
   public void run() {
     NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+
     boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
     if (isConnected) {
@@ -59,17 +61,15 @@ public class CheckConnectionInteractorImpl implements CheckConnectionInteractor 
     }
   }
 
-  @MainThread
   private void notifyOnConnectionAvaiable() {
-    //mainThread.post(new Runnable() {
-    //  @Override
-    //  public void run() {
-    callback.onConnectionAvaiable();
-    //  }
-    //});
+    mainThread.post(new Runnable() {
+      @Override
+      public void run() {
+        callback.onConnectionAvaiable();
+      }
+    });
   }
 
-  @MainThread
   private void notifyOnConnectionError() {
     callback.onConnectionError();
   }

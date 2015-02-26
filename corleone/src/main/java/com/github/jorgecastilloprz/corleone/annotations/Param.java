@@ -33,5 +33,6 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * @author Jorge Castillo Pérez
  */
 @Retention(RUNTIME) @Target(FIELD)
-public @interface Provided {
+public @interface Param {
+  String value() default "";
 }

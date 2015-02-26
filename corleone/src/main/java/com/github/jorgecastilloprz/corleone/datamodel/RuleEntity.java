@@ -13,16 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.internal;
-
-import javax.lang.model.element.ExecutableElement;
+package com.github.jorgecastilloprz.corleone.datamodel;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public class Job {
+public class RuleEntity {
 
-  public ExecutableElement getExecutionMethod() {
-    return null;
+  private String context;
+  private String previousJobQualifiedName;
+
+  public RuleEntity(String context, String previousJobQualifiedName) {
+    this.context = context;
+    this.previousJobQualifiedName = previousJobQualifiedName;
+  }
+
+  public String getContext() {
+    return context;
+  }
+  
+  public String getPreviousJobQualifiedName() {
+    return previousJobQualifiedName;
   }
 }

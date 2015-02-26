@@ -15,6 +15,7 @@
  */
 package com.github.jorgecastilloprz.corleone.internal;
 
+import com.github.jorgecastilloprz.corleone.datamodel.JobAnnotatedClass;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -70,7 +71,7 @@ class ThreadExecutor {
     this.workQueue = workQueue;
   }
 
-  public void run(final Job job) {
+  public void run(final JobAnnotatedClass job) {
     if (job == null) {
       throw new IllegalArgumentException("Job must not be null");
     }

@@ -47,7 +47,7 @@ public class SingleAnnotationInstanceValidatorTest {
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
             "import com.github.jorgecastilloprz.corleone.annotations.Job;",
             "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Provided;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Param;",
             "@Job({",
             "    @Rule(context = \"ObtainGames\"),",
             "    @Rule(context = \"BookmarkGame\"),",
@@ -55,7 +55,7 @@ public class SingleAnnotationInstanceValidatorTest {
             "})",
             "public class Test {",
             "\n",
-            "   @Provided String providedString;",
+            "   @Param(\"MyString\") String providedString;",
             "   public Test() {",
             "       Corleone.provideParams();",
             "   }",
@@ -91,7 +91,7 @@ public class SingleAnnotationInstanceValidatorTest {
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
             "import com.github.jorgecastilloprz.corleone.annotations.Job;",
             "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Provided;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Param;",
             "@Job({",
             "    @Rule(context = \"ObtainGames\"),",
             "    @Rule(context = \"BookmarkGame\"),",
@@ -99,7 +99,7 @@ public class SingleAnnotationInstanceValidatorTest {
             "})",
             "public class Test {",
             "\n",
-            "   @Provided String providedString;",
+            "   @Param(\"MyString\") String providedString;",
             "   public Test() {",
             "       Corleone.provideParams();",
             "   }",
@@ -136,7 +136,7 @@ public class SingleAnnotationInstanceValidatorTest {
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
             "import com.github.jorgecastilloprz.corleone.annotations.Job;",
             "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Provided;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Param;",
             "@Job({",
             "    @Rule(context = \"ObtainGames\"),",
             "    @Rule(context = \"BookmarkGame\"),",
@@ -180,7 +180,7 @@ public class SingleAnnotationInstanceValidatorTest {
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
             "import com.github.jorgecastilloprz.corleone.annotations.Job;",
             "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Provided;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Param;",
             "@Job({",
             "    @Rule(context = \"ObtainGames\"),",
             "    @Rule(context = \"BookmarkGame\"),",
@@ -214,5 +214,49 @@ public class SingleAnnotationInstanceValidatorTest {
         .that(source)
         .processedWith(corleoneProcessors())
         .failsToCompile();
+  }
+
+  @Test public void wrongParamPositionTest() {
+
+    JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n')
+        .join("package test;",
+            "import com.github.jorgecastilloprz.corleone.Corleone;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Job;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Param;",
+            "@Job({",
+            "    @Rule(context = \"ObtainGames\"),",
+            "    @Rule(context = \"BookmarkGame\"),",
+            "    @Rule(context = \"CommentGame\")",
+            "})",
+            "public class Test {",
+            "\n",
+            "   @Param(\"MyString\") String providedString;",
+            "   public Test() {",
+            "       Corleone.provideParams();",
+            "   }",
+            "   public void run() {",
+            "       notifyNetworkStatus(true);",
+            "   }",
+            "   @Execution",
+            "   private void notifyNetworkStatus(final boolean networkAvailable) {",
+            "       //mainThread.post(new Runnable() {",
+            "       //    @Override",
+            "       //    public void run() {",
+            "       //      callback.notifyNetworkStatus(networkAvailable);",
+            "       //    }",
+            "      //});",
+            "      if (networkAvailable) {",
+            "          Corleone.keepGoing();",
+            "      }",
+            "   }",
+            "}"));
+
+    //Truth assertion
+    Truth.ASSERT.about(javaSource())
+        .that(source)
+        .processedWith(corleoneProcessors())
+        .compilesWithoutError();
   }
 }

@@ -23,9 +23,9 @@ import static javax.tools.Diagnostic.Kind.ERROR;
 /**
  * @author Jorge Castillo Pérez
  */
-public class CorleoneErrorMessager extends ErrorMessager {
+public class ErrorMessagerImpl extends ErrorMessager {
 
-  public CorleoneErrorMessager(Messager messager) {
+  public ErrorMessagerImpl(Messager messager) {
     super(messager);
   }
 

@@ -17,15 +17,20 @@ package com.github.jorgecastilloprz.corleone;
 
 import com.github.jorgecastilloprz.corleone.annotations.Execution;
 import com.github.jorgecastilloprz.corleone.annotations.Job;
+import com.github.jorgecastilloprz.corleone.annotations.Param;
 import com.github.jorgecastilloprz.corleone.annotations.Rule;
-import com.github.jorgecastilloprz.corleone.messager.CorleoneErrorMessager;
+import com.github.jorgecastilloprz.corleone.datamodel.JobAnnotatedClass;
 import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
+import com.github.jorgecastilloprz.corleone.messager.ErrorMessagerImpl;
 import com.github.jorgecastilloprz.corleone.validator.AnnotationValidator;
 import com.github.jorgecastilloprz.corleone.validator.ClassAnnotationValidator;
+import com.github.jorgecastilloprz.corleone.validator.FieldAnnotationValidator;
 import com.github.jorgecastilloprz.corleone.validator.MethodAnnotationValidator;
 import com.github.jorgecastilloprz.corleone.validator.SingleAnnotationInstanceValidator;
 import com.google.auto.service.AutoService;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -33,6 +38,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -50,10 +56,6 @@ public class CorleoneProcessor extends AbstractProcessor {
   private Types typeUtils;
   private Filer filer;
 
-  private AnnotationValidator singleAnnotationValidator;
-  private AnnotationValidator jobClassAnnotationValidator;
-  private AnnotationValidator ruleClassAnnotationValidator;
-  private AnnotationValidator methodAnnotationValidator;
   private ErrorMessager errorMessager;
 
   @Override public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -62,7 +64,7 @@ public class CorleoneProcessor extends AbstractProcessor {
     elementUtils = processingEnv.getElementUtils();
     typeUtils = processingEnv.getTypeUtils();
     filer = processingEnv.getFiler();
-    errorMessager = new CorleoneErrorMessager(processingEnv.getMessager());
+    errorMessager = new ErrorMessagerImpl(processingEnv.getMessager());
   }
 
   /**
@@ -88,28 +90,50 @@ public class CorleoneProcessor extends AbstractProcessor {
   @Override public boolean process(Set<? extends TypeElement> typeElements,
       RoundEnvironment roundEnvironment) {
 
-    jobClassAnnotationValidator =
-        new ClassAnnotationValidator(roundEnvironment, errorMessager, Job.class);
-    ruleClassAnnotationValidator =
-        new ClassAnnotationValidator(roundEnvironment, errorMessager, Rule.class);
-    methodAnnotationValidator = new MethodAnnotationValidator(roundEnvironment, errorMessager);
-    singleAnnotationValidator =
-        new SingleAnnotationInstanceValidator(roundEnvironment, errorMessager);
-
-    if (jobClassAnnotationValidator.validate()
-        && ruleClassAnnotationValidator.validate()
-        && methodAnnotationValidator.validate()
-        && !singleAnnotationValidator.validate()) {
+    if (!annotationValidationSuccess(roundEnvironment)) {
       return false;
     }
-    
-    /* do stuff */
+
+    List<JobAnnotatedClass> jobAnnotatedClasses =
+        parseJobs(roundEnvironment.getElementsAnnotatedWith(Job.class));
 
     return false;
   }
 
-  //Set<? extends Element> dispatcherElements =
-  //    roundEnvironment.getElementsAnnotatedWith(Dispatcher.class);
-  //Set<? extends Element> executionElements =
-  //    roundEnvironment.getElementsAnnotatedWith(Execution.class);
+  private boolean annotationValidationSuccess(RoundEnvironment roundEnvironment) {
+    AnnotationValidator singleAnnotationValidator, jobClassAnnotationValidator,
+        ruleClassAnnotationValidator, executionMethodAnnotationValidator,
+        paramFieldAnnotationValidator;
+
+    jobClassAnnotationValidator =
+        new ClassAnnotationValidator(roundEnvironment, errorMessager, Job.class);
+    ruleClassAnnotationValidator =
+        new ClassAnnotationValidator(roundEnvironment, errorMessager, Rule.class);
+    executionMethodAnnotationValidator =
+        new MethodAnnotationValidator(roundEnvironment, errorMessager, Execution.class);
+    paramFieldAnnotationValidator =
+        new FieldAnnotationValidator(roundEnvironment, errorMessager, Param.class);
+    singleAnnotationValidator =
+        new SingleAnnotationInstanceValidator(roundEnvironment, errorMessager, Execution.class);
+
+    if (!jobClassAnnotationValidator.validate()
+        || !ruleClassAnnotationValidator.validate()
+        || !executionMethodAnnotationValidator.validate()
+        || !paramFieldAnnotationValidator.validate()
+        || !singleAnnotationValidator.validate()) {
+      return false;
+    }
+    return true;
+  }
+
+  private List<JobAnnotatedClass> parseJobs(Set<? extends Element> jobElements) {
+    List<JobAnnotatedClass> jobAnnotatedClasses = new LinkedList<>();
+
+    for (Element jobElement : jobElements) {
+      // We can cast it to TypeElement as we know its a class (validators)
+      TypeElement jobTypeElement = (TypeElement) jobElement;
+      jobAnnotatedClasses.add(new JobAnnotatedClass(jobTypeElement));
+    }
+    return jobAnnotatedClasses;
+  }
 }

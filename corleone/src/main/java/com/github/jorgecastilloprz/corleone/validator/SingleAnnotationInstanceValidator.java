@@ -24,16 +24,16 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.ElementFilter;
 
 /**
- * AnnotationValidator implementation based on a single instance of @Execution
- * annotations per class criteria.
+ * AnnotationValidator implementation based on a single instance of a given
+ * annotation per class criteria.
  *
  * @author Jorge Castillo Pérez
  */
 public class SingleAnnotationInstanceValidator extends AnnotationValidator {
 
   public SingleAnnotationInstanceValidator(RoundEnvironment roundEnvironment,
-      ErrorMessager errorMessager) {
-    super(roundEnvironment, errorMessager);
+      ErrorMessager errorMessager, Class annotation) {
+    super(roundEnvironment, errorMessager, annotation);
   }
 
   @Override public boolean validate() {
@@ -43,24 +43,26 @@ public class SingleAnnotationInstanceValidator extends AnnotationValidator {
   private boolean checkMultipleAnnotationInstances() {
     for (Element rootElement : roundEnvironment.getRootElements()) {
       TypeElement rootTypeElement = findEnclosingTypeElement(rootElement);
-      checkMethodAnnotationsForThisRoot(rootTypeElement);
+      if (checkMultipleInstancesForThisRoot(rootTypeElement)) {
+        return true;
+      }
     }
     return false;
   }
 
-  private boolean checkMethodAnnotationsForThisRoot(TypeElement rootTypeElement) {
+  private boolean checkMultipleInstancesForThisRoot(TypeElement rootTypeElement) {
 
-    boolean executionFoundOnThisClass = false;
+    boolean annotationFoundOnThisClass = false;
 
     for (ExecutableElement method : ElementFilter.methodsIn(
         rootTypeElement.getEnclosedElements())) {
 
-      if (method.getAnnotation(Execution.class) != null) {
-        if (executionFoundOnThisClass) {
-          errorMessager.multipleAnnotationError(Execution.class.getName());
+      if (method.getAnnotation(annotation) != null) {
+        if (annotationFoundOnThisClass) {
+          errorMessager.multipleAnnotationError(annotation.getName());
           return true;
         } else {
-          executionFoundOnThisClass = true;
+          annotationFoundOnThisClass = true;
         }
       }
     }
