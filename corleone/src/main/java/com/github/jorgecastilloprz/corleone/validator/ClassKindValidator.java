@@ -15,18 +15,17 @@
  */
 package com.github.jorgecastilloprz.corleone.validator;
 
-import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
-import javax.annotation.processing.RoundEnvironment;
+import java.util.Set;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public class ClassAnnotationValidator extends RightPlaceAnnotationValidator {
+public class ClassKindValidator extends RightElementKindValidator {
 
-  public ClassAnnotationValidator(RoundEnvironment roundEnvironment, ErrorMessager errorMessager,
-      Class annotation) {
-    super(roundEnvironment, errorMessager, annotation);
+  public ClassKindValidator(Set<? extends Element> elements) {
+    super(elements);
   }
 
   @Override protected ElementKind getElementKind() {

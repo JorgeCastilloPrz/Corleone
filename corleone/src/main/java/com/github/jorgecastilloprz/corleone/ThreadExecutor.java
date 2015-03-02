@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.internal;
+package com.github.jorgecastilloprz.corleone;
 
-import com.github.jorgecastilloprz.corleone.datamodel.JobAnnotatedClass;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -43,8 +42,7 @@ class ThreadExecutor {
 
   private ThreadExecutor() {
     threadPoolExecutor =
-        new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime,
-            timeUnit, workQueue);
+        new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, timeUnit, workQueue);
   }
 
   public static ThreadExecutor getInstance() {
@@ -71,7 +69,7 @@ class ThreadExecutor {
     this.workQueue = workQueue;
   }
 
-  public void run(final JobAnnotatedClass job) {
+  public void submit(final JobEntity job) {
     if (job == null) {
       throw new IllegalArgumentException("Job must not be null");
     }

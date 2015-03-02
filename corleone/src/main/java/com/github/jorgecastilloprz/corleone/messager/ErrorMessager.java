@@ -15,23 +15,16 @@
  */
 package com.github.jorgecastilloprz.corleone.messager;
 
-import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public abstract class ErrorMessager {
-  
-  protected Messager messager;
-  
-  public ErrorMessager(Messager messager) {
-    this.messager = messager;
-  }
+public interface ErrorMessager {
 
-  public abstract void multipleAnnotationError(String annotationName);
+  void multipleAnnotationError(String annotationName);
 
-  public abstract void error(String message, Object... args);
+  void error(String message, Object... args);
 
-  public abstract void error(Element element, String message, Object... args);
+  void error(Element element, String message, Object... args);
 }

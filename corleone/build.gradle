@@ -1,4 +1,14 @@
 apply plugin: 'java'
+apply plugin: 'checkstyle'
+
+task checkstyle(type: Checkstyle) {
+  configFile file('../config/checkstyle/checkstyle.xml')
+  source 'src/main/java'
+  include '**/*.java'
+  exclude '**/gen/**'
+
+  classpath = files()
+}
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])

@@ -19,9 +19,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
  * Field flagged with this annotation will need to be provided by previous job or the job chain
@@ -29,7 +27,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  *
  * Retention type is RUNTIME because we need this annotation to survive beyond compilation time.
  * This one is just allowed to be used on fields.
- * 
+ *
  * @author Jorge Castillo Pérez
  */
 @Retention(RUNTIME) @Target(FIELD)

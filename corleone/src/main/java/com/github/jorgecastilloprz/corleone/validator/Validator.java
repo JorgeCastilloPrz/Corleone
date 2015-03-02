@@ -15,21 +15,22 @@
  */
 package com.github.jorgecastilloprz.corleone.validator;
 
-import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
-import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.ElementKind;
+import java.util.Set;
+import javax.lang.model.element.Element;
 
 /**
+ * This class defines a simple annotation validator behavior and hides minimal construction logic
+ * to it's descendants.
+ *
  * @author Jorge Castillo Pérez
  */
-public class MethodAnnotationValidator extends RightPlaceAnnotationValidator {
+public abstract class Validator {
 
-  public MethodAnnotationValidator(RoundEnvironment roundEnvironment, ErrorMessager errorMessager,
-      Class annotation) {
-    super(roundEnvironment, errorMessager, annotation);
+  protected Set<? extends Element> elements;
+
+  public Validator(Set<? extends Element> elements) {
+    this.elements = elements;
   }
 
-  @Override protected ElementKind getElementKind() {
-    return ElementKind.METHOD;
-  }
+  public abstract boolean validate();
 }

@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.annotations;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
+package com.github.jorgecastilloprz.corleone;
 
 /**
- * Method flagged with this annotation will be executed in a thread managed by thread pool
- * executor.
- *
- * Retention type is SOURCE because we do not need this annotation to survive beyond compilation
- * time.
- *
  * @author Jorge Castillo Pérez
  */
-@Retention(SOURCE) @Target(METHOD)
-public @interface Execution {
+final class ParamProviderGenerator {
+
+  public static final String SUFFIX = "$$ParamProvider";
+  
+  ParamProviderGenerator() {
+    
+  }
 }

@@ -15,38 +15,32 @@
  */
 package com.github.jorgecastilloprz.corleone.validator;
 
-import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
+import com.github.jorgecastilloprz.corleone.messager.ErrorMessagerImpl;
 import java.util.Set;
-import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 
 /**
- * Common logic for all the right place checking validators
+ * Common logic for all the element kind checking validators
  *
  * @author Jorge Castillo Pérez
  */
-public abstract class RightPlaceAnnotationValidator extends AnnotationValidator {
+public abstract class RightElementKindValidator extends Validator {
 
-  public RightPlaceAnnotationValidator(RoundEnvironment roundEnvironment,
-      ErrorMessager errorMessager, Class annotation) {
-    super(roundEnvironment, errorMessager, annotation);
+  public RightElementKindValidator(Set<? extends Element> elements) {
+    super(elements);
   }
 
   @Override public boolean validate() {
-    Set<? extends Element> annotatedElems = roundEnvironment.getElementsAnnotatedWith(annotation);
-    return validateElements(annotatedElems, annotation.getSimpleName());
-  }
-
-  private boolean validateElements(Set<? extends Element> elementsToValidate, String annotation) {
-    for (Element currentElement : elementsToValidate) {
+    for (Element currentElement : elements) {
       if (currentElement.getKind() != getElementKind()) {
-        errorMessager.error("@%s annotation must be used to qualify elements of kind: %s.", annotation, getElementKind());
+        ErrorMessagerImpl.getInstance()
+            .error("Annotation must be used to qualify elements of kind: %s.", getElementKind());
         return false;
       }
     }
     return true;
   }
-  
+
   protected abstract ElementKind getElementKind();
 }

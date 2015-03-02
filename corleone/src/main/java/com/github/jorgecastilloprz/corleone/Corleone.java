@@ -19,12 +19,19 @@ package com.github.jorgecastilloprz.corleone;
  * @author Jorge Castillo Pérez
  */
 public class Corleone {
-  
-  public static void provideParams() {
-    
-    
+
+  public static void dispatchJobsWithContext(String context, JobParams jobParams) {
+
   }
-  
+
+  public static void dispatchJobsWithContext(String context) {
+    JobQueue jobQueue = JobQueueManager.JOB_QUEUES.get(context);
+  }
+
+  public static void provideParams() {
+
+  }
+
   public static void keepGoing() {
 
   }

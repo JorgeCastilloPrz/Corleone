@@ -23,10 +23,20 @@ import static javax.tools.Diagnostic.Kind.ERROR;
 /**
  * @author Jorge Castillo Pérez
  */
-public class ErrorMessagerImpl extends ErrorMessager {
+public class ErrorMessagerImpl implements ErrorMessager {
 
-  public ErrorMessagerImpl(Messager messager) {
-    super(messager);
+  private static ErrorMessagerImpl INSTANCE = new ErrorMessagerImpl();
+  private Messager messager;
+
+  private ErrorMessagerImpl() {
+  }
+
+  public static ErrorMessagerImpl getInstance() {
+    return INSTANCE;
+  }
+
+  public void setMessager(Messager messager) {
+    this.messager = messager;
   }
 
   @Override public void multipleAnnotationError(String annotationName) {

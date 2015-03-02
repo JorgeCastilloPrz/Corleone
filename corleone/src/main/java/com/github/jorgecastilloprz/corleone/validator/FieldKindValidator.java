@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.datamodel;
+package com.github.jorgecastilloprz.corleone.validator;
+
+import java.util.Set;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public class RuleEntity {
+public class FieldKindValidator extends RightElementKindValidator {
 
-  private String context;
-  private String previousJobQualifiedName;
-
-  public RuleEntity(String context, String previousJobQualifiedName) {
-    this.context = context;
-    this.previousJobQualifiedName = previousJobQualifiedName;
+  public FieldKindValidator(Set<? extends Element> elements) {
+    super(elements);
   }
 
-  public String getContext() {
-    return context;
-  }
-  
-  public String getPreviousJobQualifiedName() {
-    return previousJobQualifiedName;
+  @Override protected ElementKind getElementKind() {
+    return ElementKind.FIELD;
   }
 }

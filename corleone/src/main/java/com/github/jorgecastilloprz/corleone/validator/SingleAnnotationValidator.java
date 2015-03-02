@@ -15,9 +15,8 @@
  */
 package com.github.jorgecastilloprz.corleone.validator;
 
-import com.github.jorgecastilloprz.corleone.annotations.Execution;
-import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
-import javax.annotation.processing.RoundEnvironment;
+import com.github.jorgecastilloprz.corleone.messager.ErrorMessagerImpl;
+import java.util.Set;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
@@ -29,11 +28,13 @@ import javax.lang.model.util.ElementFilter;
  *
  * @author Jorge Castillo Pérez
  */
-public class SingleAnnotationInstanceValidator extends AnnotationValidator {
+public class SingleAnnotationValidator extends Validator {
 
-  public SingleAnnotationInstanceValidator(RoundEnvironment roundEnvironment,
-      ErrorMessager errorMessager, Class annotation) {
-    super(roundEnvironment, errorMessager, annotation);
+  private Class annotation;
+
+  public SingleAnnotationValidator(Set<? extends Element> elements, Class annotation) {
+    super(elements);
+    this.annotation = annotation;
   }
 
   @Override public boolean validate() {
@@ -41,7 +42,7 @@ public class SingleAnnotationInstanceValidator extends AnnotationValidator {
   }
 
   private boolean checkMultipleAnnotationInstances() {
-    for (Element rootElement : roundEnvironment.getRootElements()) {
+    for (Element rootElement : elements) {
       TypeElement rootTypeElement = findEnclosingTypeElement(rootElement);
       if (checkMultipleInstancesForThisRoot(rootTypeElement)) {
         return true;
@@ -59,7 +60,7 @@ public class SingleAnnotationInstanceValidator extends AnnotationValidator {
 
       if (method.getAnnotation(annotation) != null) {
         if (annotationFoundOnThisClass) {
-          errorMessager.multipleAnnotationError(annotation.getName());
+          ErrorMessagerImpl.getInstance().multipleAnnotationError(annotation.getName());
           return true;
         } else {
           annotationFoundOnThisClass = true;

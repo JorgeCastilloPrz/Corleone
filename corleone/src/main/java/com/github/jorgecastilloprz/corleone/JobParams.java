@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.validator;
+package com.github.jorgecastilloprz.corleone;
 
-import com.github.jorgecastilloprz.corleone.messager.ErrorMessager;
-import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.ElementKind;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public class FieldAnnotationValidator extends RightPlaceAnnotationValidator {
+public class JobParams {
 
-  public FieldAnnotationValidator(RoundEnvironment roundEnvironment, ErrorMessager errorMessager,
-      Class annotation) {
-    super(roundEnvironment, errorMessager, annotation);
+  private Map<String, Class<?>> params;
+  
+  public JobParams() {
+    params = new LinkedHashMap<>();    
   }
-
-  @Override protected ElementKind getElementKind() {
-    return ElementKind.FIELD;
+  
+  public JobParams append(String qualifier, Class<?> param) {
+    params.put(qualifier, param);
+    return this;
   }
 }
