@@ -28,14 +28,14 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 
 /**
  * Data model for classes flagged with @Job annotation. This entity will be used to wrap all the
  * parsing logic and will not be used along the whole AP. It will be mapped to a JobEntity
- * later on, when it belongs to a JobQueue and it doesnt need to know all its rules anymore, but
- * just its previous job, just in case it exists.
+ * later on.
  *
  * @author Jorge Castillo Pérez
  */
@@ -44,10 +44,12 @@ class JobAnnotatedClass {
   private TypeElement annotatedClassElement;
   private List<VariableElement> paramElements;
   private ExecutableElement executionMethod;
-  private LinkedList<RuleEntity> rules;
+  private LinkedList<RuleDataModel> rules;
+  private Elements elementUtils;
 
   public JobAnnotatedClass(TypeElement classElement, Elements elementUtils) {
     this.annotatedClassElement = classElement;
+    this.elementUtils = elementUtils;
     this.rules = new LinkedList<>();
     parseRules();
     parseParamFields(elementUtils);
@@ -67,11 +69,12 @@ class JobAnnotatedClass {
 
     for (Rule rule : ruleAnnotations) {
       try {
-        rules.add(new RuleEntity(rule.context(), rule.previousJob().getCanonicalName()));
+        rules.add(new RuleDataModel(rule.context(), rule.previousJob().getCanonicalName()));
       } catch (MirroredTypeException exception) {
         DeclaredType classTypeMirror = (DeclaredType) exception.getTypeMirror();
         TypeElement classTypeElement = (TypeElement) classTypeMirror.asElement();
-        rules.add(new RuleEntity(rule.context(), classTypeElement.getQualifiedName().toString()));
+        rules.add(
+            new RuleDataModel(rule.context(), classTypeElement.getQualifiedName().toString()));
       }
     }
   }
@@ -99,28 +102,40 @@ class JobAnnotatedClass {
     }
   }
 
-  public TypeElement getAnnotatedClassElement() {
-    return annotatedClassElement;
-  }
-
   public List<VariableElement> getParamElements() {
     return paramElements;
   }
-  
+
   public ExecutableElement getExecutionMethod() {
     return executionMethod;
   }
 
-  public List<RuleEntity> getRules() {
+  public List<RuleDataModel> getRules() {
     return rules;
   }
 
   public String getPreviousJobForContext(String context) {
-    for (RuleEntity currentRule : rules) {
+    for (RuleDataModel currentRule : rules) {
       if (currentRule.getContext().equals(context)) {
         return currentRule.getPreviousJobQualifiedName();
       }
     }
     return "";
+  }
+
+  public String getPackageName() {
+    return elementUtils.getPackageOf(annotatedClassElement).getQualifiedName().toString();
+  }
+
+  public String getClassName() {
+    return annotatedClassElement.getSimpleName().toString();
+  }
+
+  public String getQualifiedName() {
+    return annotatedClassElement.getQualifiedName().toString();
+  }
+  
+  public TypeMirror getClassType() {
+    return annotatedClassElement.asType();
   }
 }

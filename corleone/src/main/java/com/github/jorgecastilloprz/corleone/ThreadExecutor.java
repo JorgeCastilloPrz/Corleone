@@ -69,7 +69,7 @@ class ThreadExecutor {
     this.workQueue = workQueue;
   }
 
-  public void submit(final JobEntity job) {
+  public void submit(final JobDataModel job) {
     if (job == null) {
       throw new IllegalArgumentException("Job must not be null");
     }

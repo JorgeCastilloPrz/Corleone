@@ -26,6 +26,7 @@ import com.github.jorgecastilloprz.corleone.validator.MethodKindValidator;
 import com.github.jorgecastilloprz.corleone.validator.SingleAnnotationValidator;
 import com.github.jorgecastilloprz.corleone.validator.Validator;
 import com.google.auto.service.AutoService;
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -96,14 +97,21 @@ public final class CorleoneProcessor extends AbstractProcessor {
     }
 
     List<JobAnnotatedClass> jobAnnotatedClasses = parseJobs(jobElements);
+    JobQueueManager jobQueueMgr;
     try {
-      JobQueueManager jobQueueManager = new JobQueueManager(jobAnnotatedClasses);
+      jobQueueMgr = new JobQueueManager(jobAnnotatedClasses);
     } catch (IllegalStateException exception) {
       ErrorMessagerImpl.getInstance().error(exception.getMessage());
       return false;
     }
-    
-    /*Do stuff*/
+
+    ParamBinderHelper paramBinderHelper = new ParamBinderHelper(filer);
+    try {
+      paramBinderHelper.generateParamBinders();
+    } catch (IOException exception) {
+      ErrorMessagerImpl.getInstance().error(exception.getMessage());
+      return false;
+    }
 
     return false;
   }

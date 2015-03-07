@@ -49,15 +49,15 @@ class JobQueueManager {
     Map<String, JobQueue> groupedJobQueues = new LinkedHashMap<>();
 
     for (JobAnnotatedClass jobAnnotatedClass : jobAnnotatedClasses) {
-      List<RuleEntity> currentJobRules = jobAnnotatedClass.getRules();
-      for (RuleEntity rule : currentJobRules) {
+      List<RuleDataModel> currentJobRules = jobAnnotatedClass.getRules();
+      for (RuleDataModel rule : currentJobRules) {
         JobQueue queueForThisJob;
         if (groupedJobQueues.containsKey(rule.getContext())) {
           queueForThisJob = groupedJobQueues.get(rule.getContext());
         } else {
           queueForThisJob = new JobQueue(rule.getContext());
         }
-        queueForThisJob.addJob(new JobEntity(jobAnnotatedClass, rule.getContext()));
+        queueForThisJob.addJob(new JobDataModel(jobAnnotatedClass, rule.getContext()));
         groupedJobQueues.put(rule.getContext(), queueForThisJob);
       }
     }
@@ -86,15 +86,15 @@ class JobQueueManager {
   }
 
   private void checkJobCycles(JobQueue currentQueue) throws CyclicReferenceException {
-    for (JobEntity currentJob : currentQueue.getJobs()) {
+    for (JobDataModel currentJob : currentQueue.getJobs()) {
       followPathLookingForItself(currentJob, currentQueue);
     }
   }
 
-  private void followPathLookingForItself(JobEntity job, JobQueue queue)
+  private void followPathLookingForItself(JobDataModel job, JobQueue queue)
       throws CyclicReferenceException {
-    
-    JobEntity followingJob = queue.getJobAfter(job);
+
+    JobDataModel followingJob = queue.getJobAfter(job);
     while (followingJob != null) {
       if (hasTheSameQualifiedName(job, followingJob)) {
         throw new CyclicReferenceException(queue.getQueueContext());
@@ -104,16 +104,15 @@ class JobQueueManager {
     }
   }
 
-  private boolean hasTheSameQualifiedName(JobEntity job1, JobEntity job2) {
-    return job1.getAnnotatedClassElement().getQualifiedName().toString().
-        equals(job2.getAnnotatedClassElement().getQualifiedName().toString());
+  private boolean hasTheSameQualifiedName(JobDataModel job1, JobDataModel job2) {
+    return job1.getQualifiedName().equals(job2.getQualifiedName());
   }
 
   private JobQueue orderQueue(JobQueue jobQueue, String context) {
     JobQueue orderedQueue = new JobQueue(context);
-    JobEntity rootJob = jobQueue.getPotentialJobRoots().get(0);
+    JobDataModel rootJob = jobQueue.getPotentialJobRoots().get(0);
     orderedQueue.addJob(rootJob);
-    JobEntity currentJob = rootJob;
+    JobDataModel currentJob = rootJob;
     while (jobQueue.getJobAfter(currentJob) != null) {
       currentJob = jobQueue.getJobAfter(currentJob);
       orderedQueue.addJob(currentJob);

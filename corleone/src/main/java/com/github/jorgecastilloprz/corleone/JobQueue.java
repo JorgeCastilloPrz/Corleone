@@ -23,7 +23,7 @@ import java.util.List;
  */
 class JobQueue {
 
-  private List<JobEntity> queue;
+  private List<JobDataModel> queue;
   private String context;
   private int currentHead;
 
@@ -33,13 +33,13 @@ class JobQueue {
     this.currentHead = 0;
   }
 
-  void addJob(JobEntity jobEntity) {
+  void addJob(JobDataModel jobEntity) {
     queue.add(jobEntity);
   }
 
-  List<JobEntity> getPotentialJobRoots() {
-    List<JobEntity> potentialRoots = new ArrayList<>();
-    for (JobEntity currentJob : queue) {
+  List<JobDataModel> getPotentialJobRoots() {
+    List<JobDataModel> potentialRoots = new ArrayList<>();
+    for (JobDataModel currentJob : queue) {
       if (currentJob.getPreviousJobQualifiedName().equals("")) {
         potentialRoots.add(currentJob);
       }
@@ -51,21 +51,20 @@ class JobQueue {
     return context;
   }
 
-  JobEntity getJobAfter(JobEntity currentJob) {
-    for (JobEntity job : queue) {
-      if (job.getPreviousJobQualifiedName()
-          .equals(currentJob.getAnnotatedClassElement().getQualifiedName().toString())) {
+  JobDataModel getJobAfter(JobDataModel currentJob) {
+    for (JobDataModel job : queue) {
+      if (job.getPreviousJobQualifiedName().equals(currentJob.getQualifiedName())) {
         return job;
       }
     }
     return null;
   }
 
-  List<JobEntity> getJobs() {
+  List<JobDataModel> getJobs() {
     return queue;
   }
 
-  JobEntity getCurrentJob() {
+  JobDataModel getCurrentJob() {
     return queue.get(currentHead++);
   }
 }

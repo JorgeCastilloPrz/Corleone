@@ -18,11 +18,21 @@ package com.github.jorgecastilloprz.corleone;
 /**
  * @author Jorge Castillo Pérez
  */
-final class ParamProviderGenerator {
+class RuleDataModel {
 
-  public static final String SUFFIX = "$$ParamProvider";
-  
-  ParamProviderGenerator() {
-    
+  private String context;
+  private String previousJobQualifiedName;
+
+  public RuleDataModel(String context, String previousJobQualifiedName) {
+    this.context = context;
+    this.previousJobQualifiedName = previousJobQualifiedName;
+  }
+
+  public String getContext() {
+    return context;
+  }
+
+  public String getPreviousJobQualifiedName() {
+    return previousJobQualifiedName;
   }
 }

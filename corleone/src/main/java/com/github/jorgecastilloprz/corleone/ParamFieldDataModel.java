@@ -16,23 +16,32 @@
 package com.github.jorgecastilloprz.corleone;
 
 /**
+ * Data model to represent @Param tagged fields in the domain layer. We map all the
+ *
  * @author Jorge Castillo Pérez
+ * @Param VariableElements to this model to avoid dealing with complex reflection logic
+ * all the time. It is better to do so for better semantics.
  */
-class RuleEntity {
+public class ParamFieldDataModel {
+  private String type;
+  private String qualifier;
+  private String name;
 
-  private String context;
-  private String previousJobQualifiedName;
-
-  public RuleEntity(String context, String previousJobQualifiedName) {
-    this.context = context;
-    this.previousJobQualifiedName = previousJobQualifiedName;
+  ParamFieldDataModel(String type, String qualifier, String name) {
+    this.type = type;
+    this.qualifier = qualifier;
+    this.name = name;
   }
 
-  public String getContext() {
-    return context;
+  public String getType() {
+    return type;
   }
 
-  public String getPreviousJobQualifiedName() {
-    return previousJobQualifiedName;
+  public String getQualifier() {
+    return qualifier;
+  }
+
+  public String getName() {
+    return name;
   }
 }
