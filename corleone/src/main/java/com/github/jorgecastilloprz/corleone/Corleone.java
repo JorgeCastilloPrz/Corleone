@@ -17,6 +17,9 @@ package com.github.jorgecastilloprz.corleone;
 
 import com.github.jorgecastilloprz.corleone.annotations.Job;
 import com.github.jorgecastilloprz.corleone.annotations.Rule;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Corleone gateway for external apps. Used to manage job dispatching and to connect jobs to
@@ -26,18 +29,78 @@ import com.github.jorgecastilloprz.corleone.annotations.Rule;
  */
 public class Corleone {
 
-  public static void dispatchJobsWithContext(String context, JobParams jobParams) {
+  static volatile Corleone singleton = null;
+  private static List<String> contexts = new ArrayList<>();
 
+  private Corleone() {
   }
 
-  public static void dispatchJobsWithContext(String context) {
+  private static Corleone getInstance() {
+    if (singleton == null) {
+      synchronized (Corleone.class) {
+        if (singleton == null) {
+          singleton = new Corleone();
+        }
+      }
+    }
+    return singleton;
+  }
 
+  /**
+   * Provides a Corleone instance to work on the given context.
+   *
+   * @param jobContext to work on
+   * @return Corleone singleton instance
+   */
+  public static Corleone context(String jobContext) {
+    if (jobContext == null || jobContext.equals("")) {
+      throw new IllegalArgumentException("Job context must not be null or empty.");
+    }
+    contexts.clear();
+    contexts.add(jobContext);
+    return getInstance();
+  }
+
+  /**
+   * Provides Corleone instance to work on every context of the given job.
+   *
+   * @param job to get the contexts from
+   * @return Corleone singleton instance
+   */
+  public static Corleone allContexts(Object job) {
+    if (job == null) {
+      throw new IllegalArgumentException("Job class must not be null.");
+    }
+
+    Job jobAnnotation = job.getClass().getAnnotation(Job.class);
+    if (jobAnnotation == null) {
+      throw new IllegalArgumentException(
+          "You need a @Job annotated class to provide params for all it's contexts.");
+    }
+
+    contexts.clear();
+    Rule[] jobRules = jobAnnotation.value();
+    for (Rule rule : jobRules) {
+      contexts.add(rule.context());
+    }
+    return getInstance();
+  }
+
+  /**
+   * Method making the user capable of providing params to the bus
+   *
+   * @param qualifier for the param
+   */
+  public void provideParam(String qualifier, Object paramValue) {
+    for (String context : contexts) {
+      provideParamForContext(context, qualifier, paramValue);
+    }
   }
 
   /**
    * Gives the user the capability of providing new params for a given context.
    */
-  public static void provideParamForContext(String context, String qualifier, Class<?> paramValue) {
+  private void provideParamForContext(String context, String qualifier, Object paramValue) {
     if (context == null || context.equals("")) {
       throw new IllegalArgumentException("Context must not be null or empty.");
     }
@@ -50,24 +113,25 @@ public class Corleone {
     ParamBinderHelper.addProvidedParam(context, qualifier, paramValue);
   }
 
-  /**
-   * Gives the user the capability of providing new params for all the contexts of the given job.
-   */
-  public static void provideParamForAllContexts(Class<?> job, String qualifier,
-      Class<?> paramValue) {
-    Job jobAnnotation = job.getAnnotation(Job.class);
-    if (jobAnnotation == null) {
-      throw new IllegalArgumentException(
-          "You need a Job annotated class to provide params for all it's contexts.");
+  public void dispatchJobs(JobParams jobParams) {
+    if (jobParams == null) {
+      throw new IllegalArgumentException("JobParams must not be null.");
     }
 
-    Rule[] jobRules = jobAnnotation.value();
-    for (Rule rule : jobRules) {
-      provideParamForContext(rule.context(), qualifier, paramValue);
+    Map<String, Object> params = jobParams.getParams();
+    for (String paramQualifier : params.keySet()) {
+      provideParam(paramQualifier, params.get(paramQualifier));
+    }
+    dispatchJobs();
+  }
+
+  public void dispatchJobs() {
+    for (String context : contexts) {
+      JobDispatcher.getInstance().dispatchJobsWithContext(context);
     }
   }
 
-  public static void keepGoing() {
+  public void keepGoing() {
 
   }
 }

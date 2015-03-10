@@ -24,9 +24,9 @@ package com.github.jorgecastilloprz.corleone;
 class ProvidedParamDataModel {
 
   private String qualifier;
-  private Class<?> value;
+  private Object value;
 
-  ProvidedParamDataModel(String qualifier, Class<?> value) {
+  ProvidedParamDataModel(String qualifier, Object value) {
     this.qualifier = qualifier;
     this.value = value;
   }
@@ -35,7 +35,7 @@ class ProvidedParamDataModel {
     return qualifier;
   }
 
-  public Class<?> getValue() {
+  public Object getValue() {
     return value;
   }
 }

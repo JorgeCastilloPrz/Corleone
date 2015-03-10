@@ -41,8 +41,8 @@ public class AnnotationValidationTest {
 
   @Test public void correctAnnotationCountTest() {
 
-    JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n')
-        .join("package test;",
+    JavaFileObject source = JavaFileObjects.forSourceString("com.github.jorgecastilloprz.corleone.Test", Joiner.on('\n')
+        .join("package com.github.jorgecastilloprz.corleone;",
             "import com.github.jorgecastilloprz.corleone.Corleone;",
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
             "import com.github.jorgecastilloprz.corleone.annotations.Job;",
@@ -68,7 +68,7 @@ public class AnnotationValidationTest {
             "       //    }",
             "      //});",
             "      if (networkAvailable) {",
-            "          Corleone.keepGoing();",
+            "          Corleone.allContexts(this).keepGoing();",
             "      }",
             "   }",
             "}"));
@@ -82,8 +82,8 @@ public class AnnotationValidationTest {
 
   @Test public void wrongExecutionCountTest() {
 
-    JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n')
-        .join("package test;",
+    JavaFileObject source = JavaFileObjects.forSourceString("com.github.jorgecastilloprz.corleone.Test", Joiner.on('\n')
+        .join("package com.github.jorgecastilloprz.corleone;",
             "import com.github.jorgecastilloprz.corleone.Corleone;",
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
             "import com.github.jorgecastilloprz.corleone.annotations.Job;",
@@ -110,7 +110,7 @@ public class AnnotationValidationTest {
             "       //    }",
             "      //});",
             "      if (networkAvailable) {",
-            "          Corleone.keepGoing();",
+            "          Corleone.allContexts(this).keepGoing();",
             "      }",
             "   }",
             "}"));
@@ -124,8 +124,8 @@ public class AnnotationValidationTest {
 
   @Test public void wrongJobPositionTest() {
 
-    JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n')
-        .join("package test;",
+    JavaFileObject source = JavaFileObjects.forSourceString("com.github.jorgecastilloprz.corleone.Test", Joiner.on('\n')
+        .join("package com.github.jorgecastilloprz.corleone;",
             "import com.github.jorgecastilloprz.corleone.Corleone;",
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
             "import com.github.jorgecastilloprz.corleone.annotations.Job;",
@@ -151,7 +151,7 @@ public class AnnotationValidationTest {
             "       //    }",
             "      //});",
             "      if (networkAvailable) {",
-            "          Corleone.keepGoing();",
+            "          Corleone.allContexts(this).keepGoing();",
             "      }",
             "   }",
             "}"));
@@ -165,8 +165,8 @@ public class AnnotationValidationTest {
 
   @Test public void wrongRulePositionTest() {
 
-    JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n')
-        .join("package test;",
+    JavaFileObject source = JavaFileObjects.forSourceString("com.github.jorgecastilloprz.corleone.Test", Joiner.on('\n')
+        .join("package com.github.jorgecastilloprz.corleone;",
             "import com.github.jorgecastilloprz.corleone.Corleone;",
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
             "import com.github.jorgecastilloprz.corleone.annotations.Job;",
@@ -192,7 +192,7 @@ public class AnnotationValidationTest {
             "       //    }",
             "      //});",
             "      if (networkAvailable) {",
-            "          Corleone.keepGoing();",
+            "          Corleone.allContexts(this).keepGoing();",
             "      }",
             "   }",
             "}"));
@@ -206,8 +206,8 @@ public class AnnotationValidationTest {
 
   @Test public void wrongParamPositionTest() {
 
-    JavaFileObject source = JavaFileObjects.forSourceString("test.Test", Joiner.on('\n')
-        .join("package test;",
+    JavaFileObject source = JavaFileObjects.forSourceString("com.github.jorgecastilloprz.corleone.Test", Joiner.on('\n')
+        .join("package com.github.jorgecastilloprz.corleone;",
             "import com.github.jorgecastilloprz.corleone.Corleone;",
             "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
             "import com.github.jorgecastilloprz.corleone.annotations.Job;",
@@ -233,7 +233,7 @@ public class AnnotationValidationTest {
             "       //    }",
             "      //});",
             "      if (networkAvailable) {",
-            "          Corleone.keepGoing();",
+            "          Corleone.allContexts(this).keepGoing();",
             "      }",
             "   }",
             "}"));

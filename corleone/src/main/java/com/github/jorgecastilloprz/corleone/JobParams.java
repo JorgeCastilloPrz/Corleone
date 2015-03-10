@@ -23,14 +23,18 @@ import java.util.Map;
  */
 public class JobParams {
 
-  private Map<String, Class<?>> params;
-  
+  private Map<String, Object> params;
+
   public JobParams() {
-    params = new LinkedHashMap<>();    
+    params = new LinkedHashMap<>();
   }
-  
-  public JobParams append(String qualifier, Class<?> param) {
+
+  public JobParams append(String qualifier, Object param) {
     params.put(qualifier, param);
     return this;
+  }
+
+  public Map<String, Object> getParams() {
+    return params;
   }
 }

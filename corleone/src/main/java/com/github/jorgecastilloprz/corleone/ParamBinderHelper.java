@@ -15,6 +15,7 @@
  */
 package com.github.jorgecastilloprz.corleone;
 
+import com.github.jorgecastilloprz.corleone.internal.ParamBinder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -26,18 +27,16 @@ import javax.annotation.processing.Filer;
  * This class generates ParamBinder classes for every existent job by using JavaPoet square lib.
  * ParamBinder name will be JobName$$Context$$ParamBinder. Each
  * param binder will have the same package as the job class (to allow both package and public
- * job param visibility). Each job ParamBinder will have a method to iterate over all the params
- * for that job, resolving an assignation like
- * jobclass.paramname = getParamValueForQualifierAndContext(String qualifier, String context).
+ * job param visibility). Each ParamBinder will have the code for iterating over the params from
+ * the corresponding job class asking this helper to find their value on runtime.
  *
  * Provided params will be organized by context, so their qualifiers can be repeated across
  * different contexts.
  *
  * @author Jorge Castillo Pérez
  */
-final class ParamBinderHelper {
+public final class ParamBinderHelper {
 
-  static Map<Class<?>, ParamBinder> PARAM_BINDERS;
   static Map<String, List<ProvidedParamDataModel>> PROVIDED_PARAMS;
   private Filer filer;
 
@@ -46,22 +45,19 @@ final class ParamBinderHelper {
     this.filer = filer;
   }
 
-  static void addProvidedParam(String context, String qualifier, Class<?> value) {
+  static void addProvidedParam(String context, String qualifier, Object value) {
     List<ProvidedParamDataModel> providedParamsForContext;
     providedParamsForContext = getOrCreateParamCollectionForContext(context);
     providedParamsForContext.add(new ProvidedParamDataModel(qualifier, value));
+    PROVIDED_PARAMS.put(context, providedParamsForContext);
   }
 
   private static List<ProvidedParamDataModel> getOrCreateParamCollectionForContext(String context) {
-    if (PROVIDED_PARAMS.containsKey(context)) {
-      return PROVIDED_PARAMS.get(context);
-    } else {
-      return new ArrayList<>();
-    }
+    return PROVIDED_PARAMS.containsKey(context) ? PROVIDED_PARAMS.get(context)
+        : new ArrayList<ProvidedParamDataModel>();
   }
 
   public void generateParamBinders() throws IOException {
-    PARAM_BINDERS = new LinkedHashMap<>();
     for (String context : JobQueueManager.JOB_QUEUES.keySet()) {
       JobQueue currentJobQueue = JobQueueManager.JOB_QUEUES.get(context);
       for (JobDataModel jobModel : currentJobQueue.getJobs()) {
@@ -70,9 +66,29 @@ final class ParamBinderHelper {
     }
   }
 
-  private void generateParamBinderForJob(JobDataModel jobModel)
-      throws IOException {
+  private void generateParamBinderForJob(JobDataModel jobModel) throws IOException {
     ParamBinderGenerator paramBinderGenerator = new ParamBinderGenerator(jobModel);
     paramBinderGenerator.generate().writeTo(filer);
+  }
+
+  public static Object getParamsValueForQualifierAndContext(String qualifier, String context)
+      throws IllegalStateException {
+    if (PROVIDED_PARAMS.containsKey(context)) {
+      List<ProvidedParamDataModel> paramsForContext = PROVIDED_PARAMS.get(context);
+      for (ProvidedParamDataModel providedParam : paramsForContext) {
+        if (providedParam.getQualifier().equals(qualifier)) {
+          return providedParam.getValue();
+        }
+      }
+      throw new IllegalStateException("You must provide a param value for qualifier: " + qualifier);
+    } else {
+      throw new IllegalStateException("There are not provided params for context " + context);
+    }
+  }
+
+  ParamBinder<?> getBinderForClassAndContext(Class<?> cls, String context)
+      throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    String binderName = ParamBinderGenerator.getBinderClassNameForClassAndContext(cls, context);
+    return (ParamBinder<?>) Class.forName(binderName).newInstance();
   }
 }

@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  */
 class ThreadExecutor {
 
-  private static ThreadExecutor INSTANCE = new ThreadExecutor();
+  private static volatile ThreadExecutor instance = null;
 
   private int corePoolSize = 3;
   private int maxPoolSize = 5;
@@ -45,8 +45,15 @@ class ThreadExecutor {
         new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, timeUnit, workQueue);
   }
 
-  public static ThreadExecutor getInstance() {
-    return INSTANCE;
+  static ThreadExecutor getInstance() {
+    if (instance == null) {
+      synchronized (ThreadExecutor.class) {
+        if (instance == null) {
+          instance = new ThreadExecutor();
+        }
+      }
+    }
+    return instance;
   }
 
   public void setCorePoolSize(int corePoolSize) {

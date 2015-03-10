@@ -15,6 +15,7 @@
  */
 package com.github.jorgecastilloprz.corleone;
 
+import com.github.jorgecastilloprz.corleone.internal.ParamBinder;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -31,8 +32,9 @@ import javax.lang.model.element.Modifier;
  */
 class ParamBinderGenerator {
 
-  private final String SEPARATOR = "$$";
-  private final String SUFFIX = "ParamBinder";
+  static final String SEPARATOR = "$$";
+  static final String SUFFIX = "ParamBinder";
+
   private JobDataModel jobDataModel;
 
   ParamBinderGenerator(JobDataModel jobDataModel) {
@@ -40,11 +42,9 @@ class ParamBinderGenerator {
   }
 
   JavaFile generate() {
-    TypeSpec paramBinder = TypeSpec.classBuilder(
-        jobDataModel.getClassName() + SEPARATOR + jobDataModel.getContext() + SEPARATOR + SUFFIX)
+    TypeSpec paramBinder = TypeSpec.classBuilder(getBinderClassName())
         .addModifiers(Modifier.FINAL)
-        .addSuperinterface(ParameterizedTypeName.get(ClassName.get(ParamBinder.class),
-            TypeVariableName.get(jobDataModel.getClassName())))
+        .addSuperinterface(getInterfaceToImplement())
         .addMethod(generateBindParamsMethod())
         .build();
 
@@ -53,58 +53,33 @@ class ParamBinderGenerator {
   }
 
   private MethodSpec generateBindParamsMethod() {
-    MethodSpec bindParamsMethod = MethodSpec.methodBuilder("bindParams")
-        .addModifiers(Modifier.PRIVATE)
+    MethodSpec.Builder bindParamsMethod = MethodSpec.methodBuilder("bindParams")
+        .addModifiers(Modifier.PUBLIC)
         .returns(void.class)
-        .addParameter(ClassName.get(jobDataModel.getClassType()), "target")
-        .beginControlFlow("for (ParamFieldDataModel paramField : jobDataModel.getParams())")
-        .addStatement("String paramQualifier = paramField.getQualifier();")
-        .addStatement("String jobContext = jobDataModel.getContext();")
-        .beginControlFlow("if (ParamBinderHelper.PROVIDED_PARAMS.containsKey(jobContext))")
-        .addStatement("List<ProvidedParamDataModel> providedParamsForContext =\n"
-            + "            ParamBinderHelper.PROVIDED_PARAMS.get(jobContext);")
-        .addStatement("boolean paramFound = false;")
-        .beginControlFlow("for (ProvidedParamDataModel providedParam : providedParamsForContext)")
-        .beginControlFlow("if (providedParam.getQualifier().equals(paramQualifier))")
-        .addStatement("paramFound = true;")
-        .addStatement("target.\" + paramField.getName() + \" = \" + providedParam.getValue() + \"")
-        .endControlFlow()
-        .endControlFlow()
-        .beginControlFlow("!paramFound")
-        .addStatement(
-            "throw new IllegalStateException(\"You must provide a param value for \" + paramField.getName());")
-        .endControlFlow()
-        .nextControlFlow("else")
-        .addStatement(
-            "throw new IllegalStateException(\"There are not provided params for context \" + jobContext);")
-        .endControlFlow()
-        .endControlFlow()
+        .addParameter(ClassName.get(jobDataModel.getClassType()), "target");
 
-        .build();
+    for (ParamFieldDataModel paramField : jobDataModel.getParams()) {
+      bindParamsMethod.addStatement("target."
+              + paramField.getName()
+              + " = ("
+              + paramField.getType()
+              + ") $T.getParamsValueForQualifierAndContext($S,$S)", ParamBinderHelper.class,
+          paramField.getQualifier(), jobDataModel.getContext());
+    }
 
-    //for (ParamFieldDataModel paramField : jobDataModel.getParams()) {
-    //  String paramQualifier = paramField.getQualifier();
-    //  String jobContext = jobDataModel.getContext();
+    return bindParamsMethod.build();
+  }
 
-    //if (ParamBinderHelper.PROVIDED_PARAMS.containsKey(jobContext)) {
-    //  List<ProvidedParamDataModel> providedParamsForContext =
-    //      ParamBinderHelper.PROVIDED_PARAMS.get(jobContext);
+  private ParameterizedTypeName getInterfaceToImplement() {
+    return ParameterizedTypeName.get(ClassName.get(ParamBinder.class),
+        TypeVariableName.get(jobDataModel.getClassName()));
+  }
 
-    //boolean paramFound = false;
-    //for (ProvidedParamDataModel providedParam : providedParamsForContext) {
-    //  if (providedParam.getQualifier().equals(paramQualifier)) {
-    //    paramFound = true;
-    //    target.paramField.getName() = providedParam.getValue();
-    //  }
-    //}
-    //if (!paramFound) {
-    //  throw new IllegalStateException("You must provide a param value for " + paramField.getName());
-    //}
-    //} else {
-    //  throw new IllegalStateException("There are not provided params for context " + jobContext);
-    //}
-    //}
+  private String getBinderClassName() {
+    return jobDataModel.getClassName() + SEPARATOR + jobDataModel.getContext() + SEPARATOR + SUFFIX;
+  }
 
-    return bindParamsMethod;
+  static String getBinderClassNameForClassAndContext(Class<?> cls, String context) {
+    return cls.getSimpleName() + SEPARATOR + context + SEPARATOR + SUFFIX;
   }
 }

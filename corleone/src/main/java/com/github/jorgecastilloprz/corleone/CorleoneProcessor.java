@@ -54,6 +54,7 @@ public final class CorleoneProcessor extends AbstractProcessor {
   private Elements elementUtils;
   private Types typeUtils;
   private Filer filer;
+  private boolean isFirstProcessingRound;
 
   private Set<? extends Element> rootElements, jobElements, ruleElements, paramElements,
       executionElements;
@@ -64,6 +65,7 @@ public final class CorleoneProcessor extends AbstractProcessor {
     elementUtils = processingEnv.getElementUtils();
     typeUtils = processingEnv.getTypeUtils();
     filer = processingEnv.getFiler();
+    isFirstProcessingRound = true;
     ErrorMessagerImpl.getInstance().setMessager(processingEnv.getMessager());
   }
 
@@ -90,6 +92,13 @@ public final class CorleoneProcessor extends AbstractProcessor {
 
   @Override public boolean process(Set<? extends TypeElement> typeElements,
       RoundEnvironment roundEnvironment) {
+
+    //Its important not to generate classes again for following processing rounds
+    if (isFirstProcessingRound) {
+      isFirstProcessingRound = false;
+    } else {
+      return false;
+    }
 
     obtainAnnotatedElements(roundEnvironment);
     if (!annotationValidationSuccess()) {
