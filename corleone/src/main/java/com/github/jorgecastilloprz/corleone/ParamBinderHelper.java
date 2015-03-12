@@ -86,9 +86,9 @@ public final class ParamBinderHelper {
     }
   }
 
-  ParamBinder<?> getBinderForClassAndContext(Class<?> cls, String context)
+  static ParamBinder getBinderForClassNameAndContext(String classSimpleName, String context)
       throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-    String binderName = ParamBinderGenerator.getBinderClassNameForClassAndContext(cls, context);
-    return (ParamBinder<?>) Class.forName(binderName).newInstance();
+    String binderName = ParamBinderGenerator.getBinderClassNameForClassAndContext(classSimpleName, context);
+    return (ParamBinder) Class.forName(binderName).newInstance();
   }
 }

@@ -15,6 +15,10 @@
  */
 package com.github.jorgecastilloprz.corleone;
 
+import com.github.jorgecastilloprz.corleone.exceptions.UncaughtIllegalAccessException;
+import com.github.jorgecastilloprz.corleone.exceptions.UncaughtInvocationTargetException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -76,14 +80,33 @@ class ThreadExecutor {
     this.workQueue = workQueue;
   }
 
-  public void submit(final JobDataModel job) {
-    if (job == null) {
-      throw new IllegalArgumentException("Job must not be null");
+  public void submit(final Object jobInstance, String methodName) {
+    try {
+      final Method executionMethod = jobInstance.getClass().getDeclaredMethod(methodName);
+      threadPoolExecutor.submit(new Runnable() {
+        @Override public void run() {
+          invokeExecutionMethod(jobInstance, executionMethod);
+        }
+      });
+    } catch (NoSuchMethodException e) {
+      /*Code will never reach this point, as we controlled method mandatory needs in
+      the compilation time */
+      e.printStackTrace();
     }
-    threadPoolExecutor.submit(new Runnable() {
-      @Override public void run() {
-        job.getExecutionMethod();
-      }
-    });
+  }
+
+  /**
+   * If the Execution method throws an exception, it will be wrapper into an
+   * {@link InvocationTargetException}. We must catch it here and throw an uncaught exception
+   * to inform the user about the existent problem.
+   */
+  private void invokeExecutionMethod(Object jobInstance, Method executionMethod) {
+    try {
+      executionMethod.invoke(jobInstance);
+    } catch (IllegalAccessException e) {
+      throw new UncaughtIllegalAccessException(executionMethod.getName());
+    } catch (InvocationTargetException e) {
+      throw new UncaughtInvocationTargetException(executionMethod.getName());
+    }
   }
 }

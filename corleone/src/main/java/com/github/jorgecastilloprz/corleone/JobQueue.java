@@ -65,6 +65,14 @@ class JobQueue {
   }
 
   JobDataModel getCurrentJob() {
-    return queue.get(currentHead++);
+    return queue.get(currentHead);
+  }
+
+  void moveToNextJob() {
+    currentHead++;
+  }
+
+  void reset() {
+    currentHead = 0;
   }
 }

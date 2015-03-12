@@ -79,7 +79,7 @@ class ParamBinderGenerator {
     return jobDataModel.getClassName() + SEPARATOR + jobDataModel.getContext() + SEPARATOR + SUFFIX;
   }
 
-  static String getBinderClassNameForClassAndContext(Class<?> cls, String context) {
-    return cls.getSimpleName() + SEPARATOR + context + SEPARATOR + SUFFIX;
+  static String getBinderClassNameForClassAndContext(String classSimpleName, String context) {
+    return classSimpleName + SEPARATOR + context + SEPARATOR + SUFFIX;
   }
 }
