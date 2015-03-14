@@ -1,7 +1,7 @@
 Corleone
 ========
 
-<img alt="Corleone Java APT" src="./art/corleone.png" />
+![Corleone image](./art/corleone.png)
 
 Java annotation processor library used to dispatch and concatenate background tasks in a decoupled way through the following annotations:
 
