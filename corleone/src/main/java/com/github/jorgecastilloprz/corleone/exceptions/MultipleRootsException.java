@@ -19,7 +19,7 @@ package com.github.jorgecastilloprz.corleone.exceptions;
  * @author Jorge Castillo Pérez
  */
 public class MultipleRootsException extends IllegalStateException {
-  
+
   public MultipleRootsException(String context) {
     super("There are multiple root jobs defined for context: " + context);
   }

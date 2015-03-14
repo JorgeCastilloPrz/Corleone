@@ -19,5 +19,5 @@ package com.github.jorgecastilloprz.corleone.internal;
  * @author Jorge Castillo Pérez
  */
 public interface ParamBinder<T> {
-  public void bindParams(T targetClass);
+  void bindParams(T targetClass);
 }

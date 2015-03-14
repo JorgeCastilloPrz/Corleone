@@ -54,6 +54,7 @@ class ParamBinderGenerator {
 
   private MethodSpec generateBindParamsMethod() {
     MethodSpec.Builder bindParamsMethod = MethodSpec.methodBuilder("bindParams")
+        .addAnnotation(Override.class)
         .addModifiers(Modifier.PUBLIC)
         .returns(void.class)
         .addParameter(ClassName.get(jobDataModel.getClassType()), "target");

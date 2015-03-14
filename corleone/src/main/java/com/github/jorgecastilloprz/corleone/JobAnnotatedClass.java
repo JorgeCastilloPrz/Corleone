@@ -134,7 +134,7 @@ class JobAnnotatedClass {
   public String getQualifiedName() {
     return annotatedClassElement.getQualifiedName().toString();
   }
-  
+
   public TypeMirror getClassType() {
     return annotatedClassElement.asType();
   }

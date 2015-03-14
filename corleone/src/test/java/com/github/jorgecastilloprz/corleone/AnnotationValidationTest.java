@@ -73,7 +73,6 @@ public class AnnotationValidationTest {
             "   }",
             "}"));
 
-    //Truth assertion
     Truth.ASSERT.about(javaSource())
         .that(source)
         .processedWith(corleoneProcessors())
@@ -115,7 +114,6 @@ public class AnnotationValidationTest {
             "   }",
             "}"));
 
-    //Truth assertion
     Truth.ASSERT.about(javaSource())
         .that(source)
         .processedWith(corleoneProcessors())
@@ -156,7 +154,6 @@ public class AnnotationValidationTest {
             "   }",
             "}"));
 
-    //Truth assertion
     Truth.ASSERT.about(javaSource())
         .that(source)
         .processedWith(corleoneProcessors())
@@ -197,7 +194,6 @@ public class AnnotationValidationTest {
             "   }",
             "}"));
 
-    //Truth assertion
     Truth.ASSERT.about(javaSource())
         .that(source)
         .processedWith(corleoneProcessors())
@@ -238,7 +234,6 @@ public class AnnotationValidationTest {
             "   }",
             "}"));
 
-    //Truth assertion
     Truth.ASSERT.about(javaSource())
         .that(source)
         .processedWith(corleoneProcessors())

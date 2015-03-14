@@ -56,7 +56,7 @@ final class JobDispatcher {
 
     dispatchJob(job, executionMethodName);
     jobQueue.moveToNextJob();
-    //JobQueueManager.JOB_QUEUES.put(context, jobQueue); NO NEED ? Si es por referencia lo que devuelve el hashmap, no need
+    //JobQueueManager.JOB_QUEUES.put(context, jobQueue); NO NEED ? Si el get es por referencia no
   }
 
   private Class<?> findInClassPath(String qualifiedName) {
