@@ -69,11 +69,21 @@ public class GetGamesFromService {
 }
 ```
 
+Job dispatch
+---------------
+
+To start the job chain dispatch, this will be your code:
+
+```java
+Corleone.context("ObtainGames").dispatchJobs();
+```
+
 Param providing
 ---------------
 
 As you can see in the previous code snippet, `@Job` params are given by some kind of injection technique. You don't pass them as method or constructor arguments,
  but provide them by two different decoupled ways. The first one is into the `@Job` dispatch call arguments.
+ 
 ```java
 JobParams jobParams = new JobParams()
 		.append("ConnectivityManager", connectivityManager);
@@ -84,12 +94,19 @@ JobParams jobParams = new JobParams()
 		.append("PersistenceCallback", getPersistenceGameQueryCallback())
 		.append("MainThread", mainThread);
 
-	Corleone.with("ObtainGames").dispatchJobs(jobParams);
+Corleone.context("ObtainGames").dispatchJobs(jobParams);
 ```
+
 This example shows how to provide params for the whole `@Job` context execution. All the jobs linked to that context will be able to use them. This is the right 
 way to provide params just before starting the job chain execution. The `append()` method **requires a param qualifier** and a param value.
-The second way available is being used in the `GetGamesFromService` code snippet. ```java Corleone.context("ObtainGames").provideParam("MyParamQualifier", paramValue);```.
-As you can see, params can be provided by `provideParam()` method too, which requires a **param qualifier** and a param value too. This method can be used to 
+
+The second way available is being used in the `GetGamesFromService` job code snippet:
+
+```java
+Corleone.context("ObtainGames").provideParam("MyParamQualifier", paramValue);
+```
+
+As you can see, params can be added by `provideParam()` method too, which requires a **param qualifier** and a param value too. This method can be used to
 provide params from one `@Job` to a following `@Job` that will be executed later on.
 
 Dependencies
