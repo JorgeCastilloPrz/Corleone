@@ -15,32 +15,34 @@
  */
 package com.github.jorgecastilloprz.corleone.validator;
 
+import com.github.jorgecastilloprz.corleone.annotations.Execution;
 import com.github.jorgecastilloprz.corleone.messager.ErrorMessagerImpl;
 import java.util.Set;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 
 /**
- * Common logic for all the element kind checking validators
+ * Validates {@link Execution} methods to forbid more than 0 arguments.
  *
  * @author Jorge Castillo Pérez
  */
-public abstract class RightElementKindValidator extends ElementCollectionValidator {
+public class NoExecutionArgumentsValidator extends ElementCollectionValidator {
 
-  public RightElementKindValidator(Set<? extends Element> elements) {
-    super(elements);
+  public NoExecutionArgumentsValidator(Set<? extends Element> executionMethodElems) {
+    super(executionMethodElems);
   }
 
   @Override public boolean validate() {
-    for (Element currentElement : elements) {
-      if (currentElement.getKind() != getElementKind()) {
+    for (Element element : elements) {
+      if (((ExecutableElement) element).getParameters().size() > 0) {
         ErrorMessagerImpl.getInstance()
-            .error("Annotation must be used to qualify elements of kind: %s.", getElementKind());
+            .error(
+                "@Execution methods are not allowed to have any arguments. If you need arguments "
+                    + "to get passed into the Job instance, use the @Param annotation and "
+                    + "provideParams() Corleone method.");
         return false;
       }
     }
     return true;
   }
-
-  protected abstract ElementKind getElementKind();
 }

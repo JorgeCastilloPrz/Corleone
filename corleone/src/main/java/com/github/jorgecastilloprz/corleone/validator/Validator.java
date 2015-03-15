@@ -15,22 +15,9 @@
  */
 package com.github.jorgecastilloprz.corleone.validator;
 
-import java.util.Set;
-import javax.lang.model.element.Element;
-
 /**
- * This class defines a simple annotation validator behavior and hides minimal construction logic
- * to it's descendants.
- *
  * @author Jorge Castillo Pérez
  */
-public abstract class Validator {
-
-  protected Set<? extends Element> elements;
-
-  public Validator(Set<? extends Element> elements) {
-    this.elements = elements;
-  }
-
-  public abstract boolean validate();
+public interface Validator {
+  boolean validate();
 }

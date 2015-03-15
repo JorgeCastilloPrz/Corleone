@@ -28,7 +28,7 @@ import javax.lang.model.util.ElementFilter;
  *
  * @author Jorge Castillo Pérez
  */
-public class SingleAnnotationValidator extends Validator {
+public class SingleAnnotationValidator extends ElementCollectionValidator {
 
   private Class annotation;
 

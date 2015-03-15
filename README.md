@@ -1,5 +1,5 @@
-Corleone
-========
+Corleone (Not finished)
+=======================
 
 ![Corleone image](/art/corleone.png)
 
@@ -109,8 +109,26 @@ Testing
 -------
 
 * [Compile-testing][testing-libs-1]: Google testing framework to allow testing java sources @ javac compile time.
-* [Truth][testing-libs-2]: Google library to "humanize" language of JUnit testing assertions.
-* [JUnit][testing-libs-3]: Base for all the project unit tests.
+* [Truth][testing-libs-2]: Google library to "humanize" language level of JUnit testing assertions.
+* [JUnit4][testing-libs-3]: Base for all the project unit tests.
+
+Gradle dependency
+-----------------
+
+```groovy
+dependencies{
+    compile 'TBA'
+}
+```
+
+Maven dependency
+----------------
+
+```xml
+<dependency>
+    <TBA>
+</dependency>
+```
 
 Developed By
 ------------

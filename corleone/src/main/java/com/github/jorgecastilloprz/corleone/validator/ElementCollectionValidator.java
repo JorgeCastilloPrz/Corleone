@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Jorge Castillo Pérez
+ * Copyright (C) 2015 Jorge Castillo Pérez
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.easymvp.mvp.presenters;
+package com.github.jorgecastilloprz.corleone.validator;
+
+import java.util.Set;
+import javax.lang.model.element.Element;
 
 /**
- * Android lifecycle callbacks from activities/fragments are linked to the Presenters by this 
- * behavior interface. Linking callbacks is declared as an optional behavior and not a need for
- * every presenter.
+ * This class defines a simple annotation Validator for a collection of annotated elements
+ * and hides minimal construction logic to it's descendants.
  *
  * @author Jorge Castillo Pérez
  */
-public interface LifecycleCallbacks {
-    abstract void onStart();
-    public abstract void onResume();
-    public abstract void onPause();
+public abstract class ElementCollectionValidator implements Validator {
+
+  protected Set<? extends Element> elements;
+
+  public ElementCollectionValidator(Set<? extends Element> elements) {
+    this.elements = elements;
+  }
+
+  public abstract boolean validate();
 }

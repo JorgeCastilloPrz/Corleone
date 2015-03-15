@@ -23,8 +23,9 @@ import com.github.jorgecastilloprz.corleone.messager.ErrorMessagerImpl;
 import com.github.jorgecastilloprz.corleone.validator.ClassKindValidator;
 import com.github.jorgecastilloprz.corleone.validator.FieldKindValidator;
 import com.github.jorgecastilloprz.corleone.validator.MethodKindValidator;
+import com.github.jorgecastilloprz.corleone.validator.NoExecutionArgumentsValidator;
 import com.github.jorgecastilloprz.corleone.validator.SingleAnnotationValidator;
-import com.github.jorgecastilloprz.corleone.validator.Validator;
+import com.github.jorgecastilloprz.corleone.validator.ElementCollectionValidator;
 import com.google.auto.service.AutoService;
 import java.io.IOException;
 import java.util.LinkedHashSet;
@@ -48,8 +49,7 @@ import javax.lang.model.util.Types;
  *
  * @author Jorge Castillo Pérez
  */
-@AutoService(Processor.class)
-public final class CorleoneProcessor extends AbstractProcessor {
+@AutoService(Processor.class) public final class CorleoneProcessor extends AbstractProcessor {
 
   private Elements elementUtils;
   private Types typeUtils;
@@ -134,23 +134,26 @@ public final class CorleoneProcessor extends AbstractProcessor {
   }
 
   private boolean annotationValidationSuccess() {
-    Validator singleAnnotationValidator,
+    ElementCollectionValidator singleAnnotationValidator,
         jobClassKindValidator,
         ruleClassKindValidator,
         executionMethodKindValidator,
-        paramFieldKindValidator;
+        paramFieldKindValidator,
+        noExecutionArgumentsValidator;
 
     jobClassKindValidator = new ClassKindValidator(jobElements);
     ruleClassKindValidator = new ClassKindValidator(ruleElements);
     executionMethodKindValidator = new MethodKindValidator(executionElements);
     paramFieldKindValidator = new FieldKindValidator(paramElements);
     singleAnnotationValidator = new SingleAnnotationValidator(rootElements, Execution.class);
+    noExecutionArgumentsValidator = new NoExecutionArgumentsValidator(executionElements);
 
     if (!jobClassKindValidator.validate()
         || !ruleClassKindValidator.validate()
         || !executionMethodKindValidator.validate()
         || !paramFieldKindValidator.validate()
-        || !singleAnnotationValidator.validate()) {
+        || !singleAnnotationValidator.validate()
+        || !noExecutionArgumentsValidator.validate()) {
       return false;
     }
     return true;

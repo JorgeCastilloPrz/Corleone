@@ -1,1 +1,1 @@
-include ':corleone-sample', ':corleone'
+include ':corleone'

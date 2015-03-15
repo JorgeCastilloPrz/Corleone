@@ -120,6 +120,46 @@ public class AnnotationValidationTest {
         .failsToCompile();
   }
 
+  @Test public void wrongExecutionParamCountTest() {
+
+    JavaFileObject source = JavaFileObjects.forSourceString("com.github.jorgecastilloprz.corleone.Test", Joiner.on('\n')
+        .join("package com.github.jorgecastilloprz.corleone;",
+            "import com.github.jorgecastilloprz.corleone.Corleone;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Job;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
+            "import com.github.jorgecastilloprz.corleone.annotations.Param;",
+            "@Job({",
+            "    @Rule(context = \"ObtainGames\"),",
+            "    @Rule(context = \"BookmarkGame\"),",
+            "    @Rule(context = \"CommentGame\")",
+            "})",
+            "public class Test {",
+            "\n",
+            "   @Param(\"MyString\") String providedString;",
+            "   @Execution",
+            "   public void run(Integer failArgument) {",
+            "       notifyNetworkStatus(true);",
+            "   }",
+            "   private void notifyNetworkStatus(final boolean networkAvailable) {",
+            "       //mainThread.post(new Runnable() {",
+            "       //    @Override",
+            "       //    public void run() {",
+            "       //      callback.notifyNetworkStatus(networkAvailable);",
+            "       //    }",
+            "      //});",
+            "      if (networkAvailable) {",
+            "          Corleone.allContexts(this).keepGoing();",
+            "      }",
+            "   }",
+            "}"));
+
+    Truth.ASSERT.about(javaSource())
+        .that(source)
+        .processedWith(corleoneProcessors())
+        .failsToCompile();
+  }
+
   @Test public void wrongJobPositionTest() {
 
     JavaFileObject source = JavaFileObjects.forSourceString("com.github.jorgecastilloprz.corleone.Test", Joiner.on('\n')
@@ -220,7 +260,7 @@ public class AnnotationValidationTest {
             "   public void run() {",
             "       notifyNetworkStatus(true);",
             "   }",
-            "   @Execution",
+            "   @Param",
             "   private void notifyNetworkStatus(final boolean networkAvailable) {",
             "       //mainThread.post(new Runnable() {",
             "       //    @Override",
@@ -237,6 +277,6 @@ public class AnnotationValidationTest {
     Truth.ASSERT.about(javaSource())
         .that(source)
         .processedWith(corleoneProcessors())
-        .compilesWithoutError();
+        .failsToCompile();
   }
 }
