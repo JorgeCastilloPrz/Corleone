@@ -42,11 +42,24 @@ final class JobDispatcher {
   }
 
   void dispatchJobsWithContext(String context) {
+    checkQueueAvailableForContext(context);
+    JobQueue jobQueue = JobQueueManager.JOB_QUEUES.get(context);
+    jobQueue.reset();
+    dispatchCurrentJob(jobQueue, context);
+  }
+
+  private void checkQueueAvailableForContext(String context) {
     JobQueue jobQueue = JobQueueManager.JOB_QUEUES.get(context);
     if (jobQueue == null) {
       throw new IllegalStateException("There are no jobs declared for context: " + context);
     }
-    jobQueue.reset();
+  }
+
+  private void dispatchCurrentJob(JobQueue jobQueue, String context) {
+    if (!jobQueue.hasMoreJobs()) {
+      return;
+    }
+
     Class<?> jobClass = findInClassPath(jobQueue.getCurrentJob().getQualifiedName());
     Object job = buildJobClassInstance(jobClass);
     String executionMethodName = getExecutionMethodName(jobQueue.getCurrentJob());
@@ -54,9 +67,7 @@ final class JobDispatcher {
     ParamBinder jobParamBinder = obtainJobParamBinder(jobClass.getSimpleName(), context);
     jobParamBinder.bindParams(job);
 
-    dispatchJob(job, executionMethodName);
-    jobQueue.moveToNextJob();
-    //JobQueueManager.JOB_QUEUES.put(context, jobQueue); NO NEED ? Si el get es por referencia no
+    ThreadExecutor.getInstance().submit(job, executionMethodName);
   }
 
   private Class<?> findInClassPath(String qualifiedName) {
@@ -98,7 +109,10 @@ final class JobDispatcher {
     }
   }
 
-  private void dispatchJob(Object job, String executionMethodName) {
-    ThreadExecutor.getInstance().submit(job, executionMethodName);
+  void keepGoing(String context) {
+    checkQueueAvailableForContext(context);
+    JobQueue jobQueue = JobQueueManager.JOB_QUEUES.get(context);
+    jobQueue.moveToNextJob();
+    dispatchCurrentJob(jobQueue, context);
   }
 }

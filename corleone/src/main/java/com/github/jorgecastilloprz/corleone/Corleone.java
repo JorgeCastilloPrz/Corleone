@@ -31,7 +31,7 @@ import java.util.Map;
  *
  * @author Jorge Castillo Pérez
  */
-public class Corleone {
+public class Corleone implements MultipleContexts {
 
   static volatile Corleone singleton = null;
   private static List<String> contexts = new ArrayList<>();
@@ -69,9 +69,9 @@ public class Corleone {
    * Provides Corleone instance to work on every context of the given job.
    *
    * @param job to get the contexts from
-   * @return Corleone singleton instance
+   * @return Corleone singleton instance as {@link MultipleContexts} to hide some functionality
    */
-  public static Corleone allContexts(Object job) {
+  public static MultipleContexts allContexts(Object job) {
     if (job == null) {
       throw new IllegalArgumentException("Job class must not be null.");
     }
@@ -95,7 +95,7 @@ public class Corleone {
    *
    * @param qualifier for the param
    */
-  public void provideParam(String qualifier, Object paramValue) {
+  @Override public void provideParam(String qualifier, Object paramValue) {
     for (String context : contexts) {
       provideParamForContext(context, qualifier, paramValue);
     }
@@ -135,7 +135,9 @@ public class Corleone {
     }
   }
 
-  public void keepGoing() {
-
+  @Override public void keepGoing() {
+    for (String context : contexts) {
+      JobDispatcher.getInstance().keepGoing(context);
+    }
   }
 }
