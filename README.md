@@ -82,8 +82,7 @@ JobParams jobParams = new JobParams()
 		.append("PersistenceRepo", persistenceGameRepository)
  		.append("PageNum", pageNumber)
 		.append("RestCallback", getRestGameQueryCallback())
-		.append("PersistenceCallback", getPersistenceGameQueryCallback())
-		.append("MainThread", mainThread);
+		.append("PersistenceCallback", getPersistenceGameQueryCallback());
 
 Corleone.context("ObtainGames").dispatchJobs(jobParams);
 ```
@@ -103,8 +102,8 @@ we need to use the output results from one task as the input ones for a new one.
 Dependencies
 ------------
 
-* [AutoService][dependencies-1]: One of the providers of Google auto library. A metadata/config generator to avoid typical ServiceLoader manual setup.
-* [JavaPoet][dependencies-2]: A Square's java source file generation library. It's the successor of JavaWriter.
+* [AutoService][dependencies-1]: Annotation processor from Google auto library module. A metadata/config generator to avoid typical ServiceLoader manual setup.
+* [JavaPoet][dependencies-2]: A Square's java source file generation library (Successor of JavaWriter).
 
 Testing
 -------
