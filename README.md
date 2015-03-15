@@ -34,7 +34,6 @@ public class GetGamesFromService {
     @Param("RestRepo") GameRepository restGameRepository;
     @Param("PageNum") int pageNumber;
     @Param("RestCallback") Callback callback;
-    @Param("MainThread") MainThread mainThread;
 
     @Execution
     public void run() {
@@ -48,26 +47,18 @@ public class GetGamesFromService {
     }
 
     private void notifyGamesLoaded(final List<Game> games) {
-      mainThread.post(new Runnable() {
-         @Override
-         public void run() {
-            callback.onGamePageLoaded(games);
-         }
-      });
+      callback.onGamePageLoaded(games);
       Corleone.context("ObtainGames").provideParam("games", games);
-      Corleone.keepGoing();
+      Corleone.context("ObtainGames").keepGoing();
     }
 
     private void notifyPetitionError(final String message) {
-      mainThread.post(new Runnable() {
-         @Override
-         public void run() {
-            callback.onGettingGamesError(message);
-         }
-      });
+      callback.onGettingGamesError(message);
     }
 }
 ```
+
+You can declare as many jobs as you want and link them by `@Rule` contexts.
 
 Job dispatch
 ---------------
@@ -82,7 +73,7 @@ Param providing
 ---------------
 
 As you can see in the previous code snippet, `@Job` params are given by some kind of injection technique. You don't pass them as method or constructor arguments,
- but provide them by two different decoupled ways. The first one is into the `@Job` dispatch call arguments.
+ but provide them by two different ways. The first one is into the `@Job` dispatch call arguments.
  
 ```java
 JobParams jobParams = new JobParams()
@@ -98,7 +89,7 @@ Corleone.context("ObtainGames").dispatchJobs(jobParams);
 ```
 
 This example shows how to provide params for the whole `@Job` context execution. All the jobs linked to that context will be able to use them. This is the right 
-way to provide params just before starting the job chain execution. The `append()` method **requires a param qualifier** and a param value.
+way to provide params just before starting the job chain execution. The `append()` method **requires a param qualifier and a param value**.
 
 The second way available is being used in the `GetGamesFromService` job code snippet:
 
