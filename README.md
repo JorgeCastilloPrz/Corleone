@@ -1,4 +1,4 @@
-Corleone (Not finished)
+Corleone (Not finished) [![Build Status](https://travis-ci.org/JorgeCastilloPrz/Corleone.svg?branch=master)](https://travis-ci.org/JorgeCastilloPrz/Corleone)
 =======================
 
 ![Corleone image](/art/corleone.png)
