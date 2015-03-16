@@ -121,6 +121,22 @@ dependencies{
 }
 ```
 
+You will need to add this Lint rule in your build.gradle.
+
+```groovy
+lintOptions {
+  disable 'InvalidPackage'
+}
+```
+
+Some configurations may also require additional exclusions.
+
+```groovy
+packagingOptions {
+  exclude 'META-INF/services/javax.annotation.processing.Processor'
+}
+```
+
 Maven dependency
 ----------------
 
