@@ -33,6 +33,8 @@ dependencies {
   compile project(':corleone')
   compile 'com.android.support:appcompat-v7:21.0.3'
   compile 'com.jakewharton:butterknife:6.1.0'
+  compile 'com.squareup.dagger:dagger:1.2.+'
+  compile 'com.squareup.dagger:dagger-compiler:1.2.+'
 }
 
 task checkstyle(type: Checkstyle) {
