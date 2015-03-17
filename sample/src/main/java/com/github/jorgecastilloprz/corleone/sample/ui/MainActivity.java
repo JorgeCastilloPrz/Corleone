@@ -10,12 +10,10 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
-  private Toolbar toolbar;
-
-  @Override public void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    toolbar = ButterKnife.findById(this, R.id.mainToolbar);
+    Toolbar toolbar = ButterKnife.findById(this, R.id.mainToolbar);
     setSupportActionBar(toolbar);
   }
 

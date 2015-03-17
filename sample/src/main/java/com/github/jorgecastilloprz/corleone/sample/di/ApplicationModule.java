@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Jorge Castillo Pérez
+ * Copyright (C) 2015 Jorge Castillo Pérez
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,9 @@ import dagger.Provides;
  */
 @Module(
     injects = { CorleoneSampleApplication.class },
-    library = true, complete = false) public class ApplicationModule {
+    library = true, complete = false
+)
+public class ApplicationModule {
 
   private final Context appContext;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <color name="fab_primary">#F44336</color>
-  <color name="fab_primary_pressed">#E53935</color>
-  <color name="fab_ripple">#EF5350</color>
+  <color name="fab_primary_pressed">#D32F2F</color>
+  <color name="fab_ripple">#FFCDD2</color>
 </resources>

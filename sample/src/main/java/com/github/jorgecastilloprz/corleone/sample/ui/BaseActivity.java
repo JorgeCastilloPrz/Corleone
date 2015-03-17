@@ -34,7 +34,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
   private ObjectGraph activityScopeGraph;
 
-  @Override public void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     injectDependencies();
     injectViews();
@@ -61,7 +61,6 @@ public abstract class BaseActivity extends ActionBarActivity {
    */
   private void injectDependencies() {
     CorleoneSampleApplication easyMVPApplication = (CorleoneSampleApplication) getApplication();
-
     List<Object> activityScopeModules = (getModules() != null) ? getModules() : new ArrayList<>();
     activityScopeModules.add(new ActivityModule(this));
     activityScopeGraph = easyMVPApplication.buildGraphWithAditionalModules(activityScopeModules);

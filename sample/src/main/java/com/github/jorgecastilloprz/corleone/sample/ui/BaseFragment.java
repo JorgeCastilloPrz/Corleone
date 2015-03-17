@@ -22,6 +22,7 @@ import android.view.View;
 import butterknife.ButterKnife;
 
 /**
+ * Common parent fragment used for dependency and view injection.
  * Created by jorge on 2/02/15.
  */
 public class BaseFragment extends Fragment {

@@ -1,4 +1,4 @@
-package com.github.jorgecastilloprz.corleone.sample;/*
+/*
  * Copyright (C) 2015 Jorge Castillo Pérez
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,7 @@ package com.github.jorgecastilloprz.corleone.sample;/*
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.github.jorgecastilloprz.corleone.sample;
 
 import android.app.Application;
 import com.github.jorgecastilloprz.corleone.sample.di.ApplicationModule;
@@ -26,8 +27,7 @@ public class CorleoneSampleApplication extends Application {
 
   private ObjectGraph objectGraph;
 
-  @Override
-  public void onCreate() {
+  @Override public void onCreate() {
     super.onCreate();
     initDependencyInjection();
   }
@@ -57,7 +57,7 @@ public class CorleoneSampleApplication extends Application {
   }
 
   private void initDependencyInjection() {
-      objectGraph = ObjectGraph.create(new ApplicationModule(this));
+    objectGraph = ObjectGraph.create(new ApplicationModule(this));
     objectGraph.inject(this);
     objectGraph.injectStatics();
   }

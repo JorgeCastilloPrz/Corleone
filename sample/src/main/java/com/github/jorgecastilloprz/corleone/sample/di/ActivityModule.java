@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Jorge Castillo Pérez
+ * Copyright (C) 2015 Jorge Castillo Pérez
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.content.Context;
 import com.github.jorgecastilloprz.corleone.sample.di.qualifiers.ActivityContext;
 import com.github.jorgecastilloprz.corleone.sample.ui.MainActivity;
+import com.github.jorgecastilloprz.corleone.sample.ui.MainActivityFragment;
 import dagger.Module;
 import dagger.Provides;
 
@@ -28,10 +29,11 @@ import dagger.Provides;
  *
  * @author Jorge Castillo Pérez
  */
-
 @Module(
-    includes = { MainActivity.class },
-    library = true, complete = false) public class ActivityModule {
+    injects = { MainActivity.class, MainActivityFragment.class },
+    library = true, complete = false
+)
+public class ActivityModule {
 
   private final Activity activityContext;
 
