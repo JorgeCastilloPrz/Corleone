@@ -28,9 +28,7 @@ import dagger.Provides;
  */
 @Module(
     injects = { CorleoneSampleApplication.class },
-    library = true, complete = false
-)
-public class ApplicationModule {
+    library = true, complete = false) public class ApplicationModule {
 
   private final Context appContext;
 

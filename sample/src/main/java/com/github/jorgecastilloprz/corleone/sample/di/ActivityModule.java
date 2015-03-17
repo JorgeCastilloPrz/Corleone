@@ -31,9 +31,7 @@ import dagger.Provides;
  */
 @Module(
     injects = { MainActivity.class, LucasGameListFragment.class },
-    library = true, complete = false
-)
-public class ActivityModule {
+    library = true, complete = false) public class ActivityModule {
 
   private final Activity activityContext;
 

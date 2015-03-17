@@ -32,12 +32,11 @@ import org.parceler.Parcel;
     /* Required by parceler */
   }
 
-  public LucasArtGame(String imageUrl, String name, String releaseDate, String author,
-      String description) {
+  public LucasArtGame(String imageUrl, String name, String releaseDate, String description) {
     this.imageUrl = imageUrl;
     this.name = name;
     this.releaseDate = releaseDate;
-    this.author = author;
+    this.author = "LucasArts";
     this.description = description;
   }
 
