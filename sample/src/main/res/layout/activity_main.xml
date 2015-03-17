@@ -6,8 +6,8 @@
 
   <fragment
       android:id="@+id/fragment"
-      android:name="com.github.jorgecastilloprz.corleone.sample.ui.MainActivityFragment"
-      tools:layout="@layout/fragment_main"
+      android:name="com.github.jorgecastilloprz.corleone.sample.ui.fragment.LucasGameListFragment"
+      tools:layout="@layout/fragment_gamelist"
       android:layout_width="match_parent"
       android:layout_height="match_parent"/>
 

@@ -1,4 +1,4 @@
-package com.github.jorgecastilloprz.corleone.sample.ui;
+package com.github.jorgecastilloprz.corleone.sample.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import butterknife.ButterKnife;
 import com.github.jorgecastilloprz.corleone.sample.R;
+import com.github.jorgecastilloprz.corleone.sample.ui.activity.BaseActivity;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {

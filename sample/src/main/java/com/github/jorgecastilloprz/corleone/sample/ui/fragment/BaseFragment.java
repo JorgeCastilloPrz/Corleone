@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.sample.ui;
+package com.github.jorgecastilloprz.corleone.sample.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import butterknife.ButterKnife;
+import com.github.jorgecastilloprz.corleone.sample.ui.activity.BaseActivity;
 
 /**
  * Common parent fragment used for dependency and view injection.
