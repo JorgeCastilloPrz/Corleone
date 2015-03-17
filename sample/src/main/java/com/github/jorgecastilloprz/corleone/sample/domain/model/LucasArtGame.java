@@ -22,11 +22,11 @@ import org.parceler.Parcel;
  */
 @Parcel public class LucasArtGame {
 
-  private String imageUrl;
-  private String name;
-  private String releaseDate;
-  private String author;
-  private String description;
+  String imageUrl;
+  String name;
+  String releaseDate;
+  String author;
+  String description;
 
   public LucasArtGame() {
     /* Required by parceler */

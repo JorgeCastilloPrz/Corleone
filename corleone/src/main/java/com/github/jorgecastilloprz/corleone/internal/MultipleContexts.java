@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone;
+package com.github.jorgecastilloprz.corleone.internal;
 
 /**
  * To keep method calls simple, we want to keep the syntax this way:
@@ -39,7 +39,7 @@ package com.github.jorgecastilloprz.corleone;
  *
  * @author Jorge Castillo Pérez
  */
-interface MultipleContexts {
+public interface MultipleContexts {
 
   void provideParam(String qualifier, Object paramValue);
 
