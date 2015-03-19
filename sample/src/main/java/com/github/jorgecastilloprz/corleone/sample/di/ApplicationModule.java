@@ -16,8 +16,11 @@
 package com.github.jorgecastilloprz.corleone.sample.di;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.view.LayoutInflater;
 import com.github.jorgecastilloprz.corleone.sample.CorleoneSampleApplication;
+import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThread;
+import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThreadImpl;
 import dagger.Module;
 import dagger.Provides;
 
@@ -42,5 +45,13 @@ import dagger.Provides;
 
   @Provides LayoutInflater provideLayoutInflater() {
     return LayoutInflater.from(appContext);
+  }
+
+  @Provides ConnectivityManager provideConnectivityManager() {
+    return (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+  }
+
+  @Provides MainThread provideMainThread(MainThreadImpl mainThread) {
+    return mainThread;
   }
 }

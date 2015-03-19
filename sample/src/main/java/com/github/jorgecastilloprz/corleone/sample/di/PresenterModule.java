@@ -24,8 +24,10 @@ import dagger.Provides;
  * @author Jorge Castillo Pérez
  */
 @Module(
-    library = true) public class PresenterModule {
-  @Provides GameListPresenter provideGameListPresenter() {
-    return new GameListPresenterImpl();
+    injects = GameListPresenterImpl.class,
+    library = true, complete = false) public class PresenterModule {
+
+  @Provides GameListPresenter provideGameListPresenter(GameListPresenterImpl presenter) {
+    return presenter;
   }
 }

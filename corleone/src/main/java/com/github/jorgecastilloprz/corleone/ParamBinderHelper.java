@@ -41,11 +41,14 @@ public final class ParamBinderHelper {
   private Filer filer;
 
   ParamBinderHelper(Filer filer) {
-    PROVIDED_PARAMS = new LinkedHashMap<>();
     this.filer = filer;
   }
 
   static void addProvidedParam(String context, String qualifier, Object value) {
+    if (PROVIDED_PARAMS == null) {
+      PROVIDED_PARAMS = new LinkedHashMap<>();
+    }
+
     List<ProvidedParamDataModel> providedParamsForContext;
     providedParamsForContext = getOrCreateParamCollectionForContext(context);
     providedParamsForContext.add(new ProvidedParamDataModel(qualifier, value));
@@ -88,7 +91,8 @@ public final class ParamBinderHelper {
 
   static ParamBinder getBinderForClassNameAndContext(String classSimpleName, String context)
       throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-    String binderName = ParamBinderGenerator.getBinderClassNameForClassAndContext(classSimpleName, context);
+    String binderName =
+        ParamBinderGenerator.getBinderClassNameForClassAndContext(classSimpleName, context);
     return (ParamBinder) Class.forName(binderName).newInstance();
   }
 }

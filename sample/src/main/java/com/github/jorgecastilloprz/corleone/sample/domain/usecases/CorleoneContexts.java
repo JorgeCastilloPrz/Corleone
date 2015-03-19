@@ -13,24 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.sample.ui.presentation;
-
-import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtGame;
-import java.util.List;
+package com.github.jorgecastilloprz.corleone.sample.domain.usecases;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public interface GameListPresenter extends Presenter {
-
-  void setView(View view);
-
-  void onGameClicked(LucasArtGame game);
-
-  interface View {
-
-    void drawGames(List<LucasArtGame> games);
-
-    void displayConnectionError();
-  }
+public class CorleoneContexts {
+  public static final String OBTAIN_GAMES = "ObtainGames";
+  public static final String BOOKMARK_GAME = "BookmarkGame";
+  public static final String COMMENT_GAME = "CommentGame";
 }

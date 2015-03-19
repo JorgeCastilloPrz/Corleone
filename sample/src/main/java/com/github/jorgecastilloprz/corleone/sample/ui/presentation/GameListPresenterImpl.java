@@ -15,12 +15,28 @@
  */
 package com.github.jorgecastilloprz.corleone.sample.ui.presentation;
 
+import android.net.ConnectivityManager;
+import com.github.jorgecastilloprz.corleone.Corleone;
+import com.github.jorgecastilloprz.corleone.JobParams;
+import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtGame;
+import com.github.jorgecastilloprz.corleone.sample.domain.usecases.CorleoneContexts;
+import com.github.jorgecastilloprz.corleone.sample.domain.usecases.callbacks.CheckConnectionCallback;
+import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThread;
+import javax.inject.Inject;
+
 /**
  * @author Jorge Castillo Pérez
  */
 public class GameListPresenterImpl implements GameListPresenter {
 
   private View view;
+  private ConnectivityManager connectivityManager;
+  private MainThread mainThread;
+
+  @Inject GameListPresenterImpl(ConnectivityManager connectivityManager, MainThread mainThread) {
+    this.connectivityManager = connectivityManager;
+    this.mainThread = mainThread;
+  }
 
   @Override public void setView(View view) {
     if (view == null) {
@@ -30,7 +46,7 @@ public class GameListPresenterImpl implements GameListPresenter {
   }
 
   @Override public void initialize() {
-
+    dispatchObtainGamesTasks();
   }
 
   @Override public void resume() {
@@ -38,6 +54,30 @@ public class GameListPresenterImpl implements GameListPresenter {
   }
 
   @Override public void pause() {
+
+  }
+
+  /**
+   * All tasks for ObtainGames context will be dispatched in order
+   */
+  private void dispatchObtainGamesTasks() {
+    JobParams params = new JobParams()
+        .append("ConnectivityManager", connectivityManager)
+        .append("MainThread", mainThread)
+        .append("CheckConnectionCallback", getCheckConnectionCallback());
+
+    Corleone.context(CorleoneContexts.OBTAIN_GAMES).dispatchJobs(params);
+  }
+
+  private Object getCheckConnectionCallback() {
+    return new CheckConnectionCallback() {
+      @Override public void onConnectionStatusChecked(boolean connectionAvailable) {
+
+      }
+    };
+  }
+
+  @Override public void onGameClicked(LucasArtGame game) {
 
   }
 }
