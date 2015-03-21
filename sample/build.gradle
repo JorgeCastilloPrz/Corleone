@@ -35,6 +35,7 @@ dependencies {
   compile 'com.jakewharton:butterknife:6.1.0'
   compile "org.parceler:parceler-api:0.2.15"
   provided "org.parceler:parceler:0.2.15"
+  provided project(':corleone-compiler')
   compile project(':corleone')
   compile 'com.android.support:support-v4:21.0.0'
   compile 'com.android.support:appcompat-v7:21.0.0'

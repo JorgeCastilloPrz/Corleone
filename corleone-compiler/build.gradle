@@ -15,10 +15,9 @@ apply plugin: 'checkstyle'
 apply plugin: 'apt'
 
 dependencies {
-  compile project(':corleone-compiler')
-  testCompile 'junit:junit:4.11'
-  testCompile 'com.google.testing.compile:compile-testing:0.5'
-  testCompile files(System.getenv("JAVA_HOME") + "/lib/tools.jar")
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  compile 'com.google.auto.service:auto-service:1.0-rc2'
+  compile 'com.squareup:javapoet:1.0.0'
 }
 
 task checkstyle(type: Checkstyle) {
