@@ -16,10 +16,8 @@
 package com.github.jorgecastilloprz.corleone;
 
 import com.github.jorgecastilloprz.corleone.annotations.Param;
-import com.github.jorgecastilloprz.corleone.internal.EmptyDefaultClass;
 import java.util.ArrayList;
 import java.util.List;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
@@ -30,9 +28,9 @@ import javax.lang.model.type.TypeMirror;
  *
  * @author Jorge Castillo Pérez
  */
-class JobDataModel {
+public class JobDataModel {
 
-  private ExecutableElement executionMethod;
+  private String executionMethodName;
   private String previousJobQualifiedName;
   private List<ParamFieldDataModel> params;
   private String packageName;
@@ -44,7 +42,7 @@ class JobDataModel {
   private final String NO_PREVIOUS_JOB = EmptyDefaultClass.class.getCanonicalName();
 
   JobDataModel(JobAnnotatedClass annotatedClassToMapFrom, String context) {
-    executionMethod = annotatedClassToMapFrom.getExecutionMethod();
+    executionMethodName = annotatedClassToMapFrom.getExecutionMethodName();
     params = mapParamsToDataModel(annotatedClassToMapFrom.getParamElements());
     previousJobQualifiedName = annotatedClassToMapFrom.getPreviousJobForContext(context);
     packageName = annotatedClassToMapFrom.getPackageName();
@@ -54,16 +52,38 @@ class JobDataModel {
     this.classType = annotatedClassToMapFrom.getClassType();
   }
 
+  /**
+   * As job queues structure is not going to survive beyond compilation time, we will need to
+   * autogenerate classes to fill new runtime queues with JobDataModel values. We will not be
+   * able to pass JobDataModels from the compilation time just by reference, because thouse
+   * refs will not be available on runtime. We will need to copy all the values to the runtime
+   * versions of JobDataModels. See {@link RuntimeQueueGenerator}
+   */
+  JobDataModel(String executionMethodName, String previousJobQualifiedName,
+      String packageName, String className, String qualifiedName, String context) {
+
+    this.executionMethodName = executionMethodName;
+    this.previousJobQualifiedName = previousJobQualifiedName;
+    this.packageName = packageName;
+    this.className = className;
+    this.qualifiedName = qualifiedName;
+    this.context = context;
+  }
+
   public String getPreviousJobQualifiedName() {
     return (previousJobQualifiedName.equals(NO_PREVIOUS_JOB)) ? "" : previousJobQualifiedName;
   }
 
-  public ExecutableElement getExecutionMethod() {
-    return executionMethod;
+  public String getExecutionMethodName() {
+    return executionMethodName;
   }
 
   public List<ParamFieldDataModel> getParams() {
     return params;
+  }
+
+  public void addParam(ParamFieldDataModel param) {
+    params.add(param);
   }
 
   private List<ParamFieldDataModel> mapParamsToDataModel(List<VariableElement> paramElements) {

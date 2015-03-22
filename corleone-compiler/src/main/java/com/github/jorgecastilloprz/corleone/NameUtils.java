@@ -16,32 +16,24 @@
 package com.github.jorgecastilloprz.corleone;
 
 /**
- * Data model to represent @Param tagged fields in the domain layer. We map all the
- *
  * @author Jorge Castillo Pérez
- * @Param VariableElements to this model to avoid dealing with complex reflection logic
- * all the time. It is better to do so for better semantics.
  */
-public class ParamFieldDataModel {
-  private String type;
-  private String qualifier;
-  private String name;
+class NameUtils {
 
-  public ParamFieldDataModel(String type, String qualifier, String name) {
-    this.type = type;
-    this.qualifier = qualifier;
-    this.name = name;
+  static final String SEPARATOR = "$$";
+  static final String PARAM_BINDER_SUFFIX = "ParamBinder";
+  static final String RUNTIME_QUEUE_SUFFIX = "RuntimeQueue";
+  static final String RUNTIME_QUEUES_PACKAGE = "com.github.jorgecastilloprz.corleone";
+
+  static String getBinderClassName(String jobDataModelClassName, String context) {
+    return jobDataModelClassName
+        + NameUtils.SEPARATOR
+        + context
+        + NameUtils.SEPARATOR
+        + NameUtils.PARAM_BINDER_SUFFIX;
   }
 
-  public String getType() {
-    return type;
-  }
-
-  public String getQualifier() {
-    return qualifier;
-  }
-
-  public String getName() {
-    return name;
+  static String getRuntimeQueueQualifiedName(String context) {
+    return RUNTIME_QUEUES_PACKAGE + "." + context + SEPARATOR + RUNTIME_QUEUE_SUFFIX;
   }
 }

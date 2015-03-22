@@ -18,7 +18,6 @@ package com.github.jorgecastilloprz.corleone;
 import com.github.jorgecastilloprz.corleone.exceptions.UncaughtClassNotFoundException;
 import com.github.jorgecastilloprz.corleone.exceptions.UncaughtIllegalAccessException;
 import com.github.jorgecastilloprz.corleone.exceptions.UncaughtInstantiationException;
-import com.github.jorgecastilloprz.corleone.internal.ParamBinder;
 
 /**
  * @author Jorge Castillo Pérez
@@ -26,8 +25,10 @@ import com.github.jorgecastilloprz.corleone.internal.ParamBinder;
 final class JobDispatcher {
 
   static volatile JobDispatcher singleton = null;
+  private RuntimeQueueCache queueCache;
 
   private JobDispatcher() {
+    queueCache = new RuntimeQueueCache();
   }
 
   static JobDispatcher getInstance() {
@@ -42,54 +43,24 @@ final class JobDispatcher {
   }
 
   void dispatchJobsWithContext(String context) {
-    checkQueueAvailableForContext(context);
-    JobQueue jobQueue = JobQueueManager.JOB_QUEUES.get(context);
-    jobQueue.reset();
-    dispatchCurrentJob(jobQueue, context);
+    RuntimeQueue queue = queueCache.getQueueForContext(context);
+    queue.reset();
+    dispatchCurrentJob(queue, context);
   }
 
-  private void checkQueueAvailableForContext(String context) {
-    JobQueue jobQueue = JobQueueManager.JOB_QUEUES.get(context);
-    if (jobQueue == null) {
-      throw new IllegalStateException("There are no jobs declared for context: " + context);
-    }
-  }
-
-  private void dispatchCurrentJob(JobQueue jobQueue, String context) {
+  private void dispatchCurrentJob(RuntimeQueue jobQueue, String context) {
     if (!jobQueue.hasMoreJobs()) {
       return;
     }
 
-    Class<?> jobClass = findInClassPath(jobQueue.getCurrentJob().getQualifiedName());
-    Object job = buildJobClassInstance(jobClass);
-    String executionMethodName = getExecutionMethodName(jobQueue.getCurrentJob());
+    Class<?> jobClass = ClassUtils.findInClassPath(jobQueue.getCurrentJob().getQualifiedName());
+    Object job = ClassUtils.buildClassInstance(jobClass);
+    String executionMethodName = jobQueue.getCurrentJob().getExecutionMethodName();
 
     ParamBinder jobParamBinder = obtainJobParamBinder(jobClass.getSimpleName(), context);
     jobParamBinder.bindParams(job);
 
     ThreadExecutor.getInstance().submit(job, executionMethodName);
-  }
-
-  private Class<?> findInClassPath(String qualifiedName) {
-    try {
-      return Class.forName(qualifiedName);
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException("Class " + qualifiedName + " could not be found.");
-    }
-  }
-
-  private Object buildJobClassInstance(Class<?> jobClass) {
-    try {
-      return jobClass.newInstance();
-    } catch (InstantiationException e) {
-      throw new UncaughtInstantiationException(jobClass.getCanonicalName());
-    } catch (IllegalAccessException e) {
-      throw new UncaughtIllegalAccessException(jobClass.getCanonicalName());
-    }
-  }
-
-  private String getExecutionMethodName(JobDataModel job) {
-    return job.getExecutionMethod().getSimpleName().toString();
   }
 
   /**
@@ -110,9 +81,8 @@ final class JobDispatcher {
   }
 
   void keepGoing(String context) {
-    checkQueueAvailableForContext(context);
-    JobQueue jobQueue = JobQueueManager.JOB_QUEUES.get(context);
-    jobQueue.moveToNextJob();
-    dispatchCurrentJob(jobQueue, context);
+    RuntimeQueue queue = queueCache.getQueueForContext(context);
+    queue.moveToNextJob();
+    dispatchCurrentJob(queue, context);
   }
 }

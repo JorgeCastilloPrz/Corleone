@@ -13,11 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.internal;
+package com.github.jorgecastilloprz.corleone;
 
 /**
+ * Methods needed for JobDispatcher.
+ *
  * @author Jorge Castillo Pérez
  */
-public interface ParamBinder<T> {
-  void bindParams(T targetClass);
+public interface RuntimeQueue {
+
+  void bindQueueValues();
+
+  JobDataModel getCurrentJob();
+
+  void reset();
+
+  void moveToNextJob();
+
+  boolean hasMoreJobs();
 }

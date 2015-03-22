@@ -16,32 +16,8 @@
 package com.github.jorgecastilloprz.corleone;
 
 /**
- * Data model to represent @Param tagged fields in the domain layer. We map all the
- *
  * @author Jorge Castillo Pérez
- * @Param VariableElements to this model to avoid dealing with complex reflection logic
- * all the time. It is better to do so for better semantics.
  */
-public class ParamFieldDataModel {
-  private String type;
-  private String qualifier;
-  private String name;
-
-  public ParamFieldDataModel(String type, String qualifier, String name) {
-    this.type = type;
-    this.qualifier = qualifier;
-    this.name = name;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public String getQualifier() {
-    return qualifier;
-  }
-
-  public String getName() {
-    return name;
-  }
+public interface ParamBinder<T> {
+  void bindParams(T targetClass);
 }

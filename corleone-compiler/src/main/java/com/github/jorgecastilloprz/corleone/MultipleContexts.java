@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.internal;
+package com.github.jorgecastilloprz.corleone;
 
 /**
  * To keep method calls simple, we want to keep the syntax this way:

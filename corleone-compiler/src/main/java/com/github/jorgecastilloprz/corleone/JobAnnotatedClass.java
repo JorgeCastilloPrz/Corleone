@@ -106,8 +106,8 @@ class JobAnnotatedClass {
     return paramElements;
   }
 
-  public ExecutableElement getExecutionMethod() {
-    return executionMethod;
+  public String getExecutionMethodName() {
+    return executionMethod.getSimpleName().toString();
   }
 
   public List<RuleDataModel> getRules() {

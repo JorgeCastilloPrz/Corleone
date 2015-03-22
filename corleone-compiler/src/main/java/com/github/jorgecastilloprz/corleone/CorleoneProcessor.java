@@ -106,9 +106,9 @@ import javax.lang.model.util.Types;
     }
 
     List<JobAnnotatedClass> jobAnnotatedClasses = parseJobs(jobElements);
-    JobQueueManager jobQueueMgr;
+    JobQueueManager jobQueueManager;
     try {
-      jobQueueMgr = new JobQueueManager(jobAnnotatedClasses);
+      jobQueueManager = new JobQueueManager(jobAnnotatedClasses);
     } catch (IllegalStateException exception) {
       ErrorMessagerImpl.getInstance().error(exception.getMessage());
       return false;
@@ -117,6 +117,14 @@ import javax.lang.model.util.Types;
     ParamBinderHelper paramBinderHelper = new ParamBinderHelper(filer);
     try {
       paramBinderHelper.generateParamBinders();
+    } catch (IOException exception) {
+      ErrorMessagerImpl.getInstance().error(exception.getMessage());
+      return false;
+    }
+
+    RuntimeQueueHelper runtimeQueueHelper = new RuntimeQueueHelper(filer);
+    try {
+      runtimeQueueHelper.generateRuntimeQueues();
     } catch (IOException exception) {
       ErrorMessagerImpl.getInstance().error(exception.getMessage());
       return false;

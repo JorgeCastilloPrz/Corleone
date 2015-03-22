@@ -15,7 +15,6 @@
  */
 package com.github.jorgecastilloprz.corleone;
 
-import com.github.jorgecastilloprz.corleone.internal.ParamBinder;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -32,9 +31,6 @@ import javax.lang.model.element.Modifier;
  */
 class ParamBinderGenerator {
 
-  static final String SEPARATOR = "$$";
-  static final String SUFFIX = "ParamBinder";
-
   private JobDataModel jobDataModel;
 
   ParamBinderGenerator(JobDataModel jobDataModel) {
@@ -42,7 +38,8 @@ class ParamBinderGenerator {
   }
 
   JavaFile generate() {
-    TypeSpec paramBinder = TypeSpec.classBuilder(getBinderClassName())
+    TypeSpec paramBinder = TypeSpec.classBuilder(
+        NameUtils.getBinderClassName(jobDataModel.getClassName(), jobDataModel.getContext()))
         .addModifiers(Modifier.FINAL)
         .addSuperinterface(getInterfaceToImplement())
         .addMethod(generateBindParamsMethod())
@@ -74,13 +71,5 @@ class ParamBinderGenerator {
   private ParameterizedTypeName getInterfaceToImplement() {
     return ParameterizedTypeName.get(ClassName.get(ParamBinder.class),
         TypeVariableName.get(jobDataModel.getClassName()));
-  }
-
-  private String getBinderClassName() {
-    return jobDataModel.getClassName() + SEPARATOR + jobDataModel.getContext() + SEPARATOR + SUFFIX;
-  }
-
-  static String getBinderClassNameForClassAndContext(String classSimpleName, String context) {
-    return classSimpleName + SEPARATOR + context + SEPARATOR + SUFFIX;
   }
 }

@@ -34,7 +34,7 @@ import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
  */
 public class ParamBinderGeneratorTest {
 
-  @Test public void correctAnnotationCountTest() {
+  @Test public void paramBinderGenerationTest() {
 
     JavaFileObject source = JavaFileObjects.forSourceString(
         "com.github.jorgecastilloprz.corleone.Test", Joiner.on('\n')
@@ -73,7 +73,6 @@ public class ParamBinderGeneratorTest {
         "com.github.jorgecastilloprz.corleone.Test$$ObtainGames$$ParamBinder", Joiner.on('\n')
             .join("package com.github.jorgecastilloprz.corleone;",
                 "\n",
-                "import com.github.jorgecastilloprz.corleone.internal.ParamBinder;",
                 "import java.lang.Override;",
                 "\n",
                 "final class Test$$ObtainGames$$ParamBinder implements ParamBinder<Test> {",
@@ -88,7 +87,6 @@ public class ParamBinderGeneratorTest {
         "com.github.jorgecastilloprz.corleone.Test$$BookmarkGame$$ParamBinder", Joiner.on('\n')
             .join("package com.github.jorgecastilloprz.corleone;",
                 "\n",
-                "import com.github.jorgecastilloprz.corleone.internal.ParamBinder;",
                 "import java.lang.Override;",
                 "\n",
                 "final class Test$$BookmarkGame$$ParamBinder implements ParamBinder<Test> {",
@@ -103,7 +101,6 @@ public class ParamBinderGeneratorTest {
         "com.github.jorgecastilloprz.corleone.Test$$CommentGame$$ParamBinder", Joiner.on('\n')
             .join("package com.github.jorgecastilloprz.corleone;",
                 "\n",
-                "import com.github.jorgecastilloprz.corleone.internal.ParamBinder;",
                 "import java.lang.Override;",
                 "\n",
                 "final class Test$$CommentGame$$ParamBinder implements ParamBinder<Test> {",

@@ -15,7 +15,6 @@
  */
 package com.github.jorgecastilloprz.corleone;
 
-import com.github.jorgecastilloprz.corleone.internal.ParamBinder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -91,8 +90,7 @@ public final class ParamBinderHelper {
 
   static ParamBinder getBinderForClassNameAndContext(String classSimpleName, String context)
       throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-    String binderName =
-        ParamBinderGenerator.getBinderClassNameForClassAndContext(classSimpleName, context);
+    String binderName = NameUtils.getBinderClassName(classSimpleName, context);
     return (ParamBinder) Class.forName(binderName).newInstance();
   }
 }

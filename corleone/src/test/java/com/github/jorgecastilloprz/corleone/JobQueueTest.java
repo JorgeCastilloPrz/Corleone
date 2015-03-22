@@ -107,22 +107,16 @@ public class JobQueueTest {
     commentGameQueue = JobQueueManager.JOB_QUEUES.get("CommentGame");
   }
 
-  @Test public void currentJobTest() {
-    JobDataModel currentJob = obtainGamesQueue.getCurrentJob();
-    Truth.ASSERT.that(currentJob.getClassName()).isNotNull();
-    Truth.ASSERT.that(currentJob.getClassName()).isEqualTo("Test");
-  }
-
-  @Test public void addItemTest() {
+  @Test public void addJobTest() {
     JobQueue jobQueue = new JobQueue("ObtainGames");
 
     Truth.ASSERT.that(jobQueue.getJobs()).isNotNull();
 
-    jobQueue.addJob(obtainGamesQueue.getCurrentJob());
+    jobQueue.addJob(obtainGamesQueue.getJobs().get(0));
     Truth.ASSERT.that(jobQueue.getJobs().size() == 1);
 
-    jobQueue.addJob(obtainGamesQueue.getCurrentJob());
-    jobQueue.addJob(obtainGamesQueue.getCurrentJob());
+    jobQueue.addJob(obtainGamesQueue.getJobs().get(1));
+    jobQueue.addJob(obtainGamesQueue.getJobs().get(2));
     Truth.ASSERT.that(jobQueue.getJobs().size() == 3);
   }
 
@@ -144,7 +138,7 @@ public class JobQueueTest {
   }
 
   @Test public void getJobAfterCurrentOneTest() {
-    JobDataModel currentJob = obtainGamesQueue.getCurrentJob();
+    JobDataModel currentJob = obtainGamesQueue.getJobs().get(0);
     JobDataModel nextJob = obtainGamesQueue.getJobAfter(currentJob);
 
     Truth.ASSERT.that(nextJob).isNotNull();
@@ -154,34 +148,5 @@ public class JobQueueTest {
 
     Truth.ASSERT.that(nextJob).isNotNull();
     Truth.ASSERT.that(nextJob.getClassName()).isEqualTo("Test3");
-  }
-
-  @Test public void moveToNextTest() {
-    Truth.ASSERT.that(obtainGamesQueue.getCurrentJob()).isNotNull();
-    Truth.ASSERT.that(obtainGamesQueue.getCurrentJob().getClassName()).isEqualTo("Test");
-
-    obtainGamesQueue.moveToNextJob();
-
-    Truth.ASSERT.that(obtainGamesQueue.getCurrentJob()).isNotNull();
-    Truth.ASSERT.that(obtainGamesQueue.getCurrentJob().getClassName()).isEqualTo("Test2");
-
-    obtainGamesQueue.moveToNextJob();
-
-    Truth.ASSERT.that(obtainGamesQueue.getCurrentJob()).isNotNull();
-    Truth.ASSERT.that(obtainGamesQueue.getCurrentJob().getClassName()).isEqualTo("Test3");
-
-    obtainGamesQueue.moveToNextJob();
-    Truth.ASSERT.that(obtainGamesQueue.getCurrentJob()).isNull();
-  }
-
-  @Test public void resetTest() {
-    obtainGamesQueue.moveToNextJob();
-    obtainGamesQueue.moveToNextJob();
-
-    Truth.ASSERT.that(obtainGamesQueue.getCurrentJob()).isNotNull();
-    Truth.ASSERT.that(obtainGamesQueue.getCurrentJob().getClassName()).isEqualTo("Test3");
-
-    obtainGamesQueue.reset();
-    Truth.ASSERT.that(obtainGamesQueue.getCurrentJob().getClassName()).isEqualTo("Test");
   }
 }

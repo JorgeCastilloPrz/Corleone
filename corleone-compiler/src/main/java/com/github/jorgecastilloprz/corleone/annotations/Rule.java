@@ -15,7 +15,7 @@
  */
 package com.github.jorgecastilloprz.corleone.annotations;
 
-import com.github.jorgecastilloprz.corleone.internal.EmptyDefaultClass;
+import com.github.jorgecastilloprz.corleone.EmptyDefaultClass;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 

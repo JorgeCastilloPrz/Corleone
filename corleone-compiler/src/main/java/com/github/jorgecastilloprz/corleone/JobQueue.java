@@ -18,19 +18,14 @@ package com.github.jorgecastilloprz.corleone;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Jorge Castillo Pérez
- */
 class JobQueue {
 
   private List<JobDataModel> queue;
   private String context;
-  private int currentHead;
 
   JobQueue(String context) {
     this.queue = new ArrayList<>();
     this.context = context;
-    this.currentHead = 0;
   }
 
   void addJob(JobDataModel jobEntity) {
@@ -62,21 +57,5 @@ class JobQueue {
 
   List<JobDataModel> getJobs() {
     return queue;
-  }
-
-  JobDataModel getCurrentJob() {
-    return (currentHead < queue.size()) ? queue.get(currentHead) : null;
-  }
-
-  void reset() {
-    currentHead = 0;
-  }
-
-  void moveToNextJob() {
-    currentHead++;
-  }
-
-  boolean hasMoreJobs() {
-    return getCurrentJob() != null;
   }
 }

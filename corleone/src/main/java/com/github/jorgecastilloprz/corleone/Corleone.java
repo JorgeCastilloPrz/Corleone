@@ -17,7 +17,6 @@ package com.github.jorgecastilloprz.corleone;
 
 import com.github.jorgecastilloprz.corleone.annotations.Job;
 import com.github.jorgecastilloprz.corleone.annotations.Rule;
-import com.github.jorgecastilloprz.corleone.internal.MultipleContexts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
