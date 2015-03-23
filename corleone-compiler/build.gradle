@@ -16,7 +16,6 @@ apply plugin: 'apt'
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile 'com.google.auto.service:auto-service:1.0-rc2'
   compile 'com.squareup:javapoet:1.0.0'
 }
 

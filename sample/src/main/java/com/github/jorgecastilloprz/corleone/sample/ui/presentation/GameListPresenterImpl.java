@@ -61,8 +61,7 @@ public class GameListPresenterImpl implements GameListPresenter {
    * All tasks for ObtainGames context will be dispatched in order
    */
   private void dispatchObtainGamesTasks() {
-    JobParams params = new JobParams()
-        .append("ConnectivityManager", connectivityManager)
+    JobParams params = new JobParams().append("ConnectivityManager", connectivityManager)
         .append("MainThread", mainThread)
         .append("CheckConnectionCallback", getCheckConnectionCallback());
 
@@ -72,7 +71,9 @@ public class GameListPresenterImpl implements GameListPresenter {
   private Object getCheckConnectionCallback() {
     return new CheckConnectionCallback() {
       @Override public void onConnectionStatusChecked(boolean connectionAvailable) {
-
+        if (!connectionAvailable) {
+          view.displayConnectionError();
+        }
       }
     };
   }

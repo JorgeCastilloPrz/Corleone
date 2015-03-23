@@ -21,12 +21,11 @@ import com.github.jorgecastilloprz.corleone.annotations.Param;
 import com.github.jorgecastilloprz.corleone.annotations.Rule;
 import com.github.jorgecastilloprz.corleone.messager.ErrorMessagerImpl;
 import com.github.jorgecastilloprz.corleone.validator.ClassKindValidator;
+import com.github.jorgecastilloprz.corleone.validator.ElementCollectionValidator;
 import com.github.jorgecastilloprz.corleone.validator.FieldKindValidator;
 import com.github.jorgecastilloprz.corleone.validator.MethodKindValidator;
 import com.github.jorgecastilloprz.corleone.validator.NoExecutionArgumentsValidator;
 import com.github.jorgecastilloprz.corleone.validator.SingleAnnotationValidator;
-import com.github.jorgecastilloprz.corleone.validator.ElementCollectionValidator;
-import com.google.auto.service.AutoService;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -35,7 +34,6 @@ import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
@@ -49,7 +47,7 @@ import javax.lang.model.util.Types;
  *
  * @author Jorge Castillo Pérez
  */
-@AutoService(Processor.class) public final class CorleoneProcessor extends AbstractProcessor {
+public final class CorleoneProcessor extends AbstractProcessor {
 
   private Elements elementUtils;
   private Types typeUtils;

@@ -18,7 +18,7 @@ package com.github.jorgecastilloprz.corleone.sample.ui.activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import butterknife.ButterKnife;
-import com.github.jorgecastilloprz.corleone.sample.CorleoneSampleApplication;
+import com.github.jorgecastilloprz.corleone.sample.SampleApplication;
 import com.github.jorgecastilloprz.corleone.sample.di.ActivityModule;
 import dagger.ObjectGraph;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public abstract class BaseActivity extends ActionBarActivity {
    * inheritance.
    */
   private void injectDependencies() {
-    CorleoneSampleApplication easyMVPApplication = (CorleoneSampleApplication) getApplication();
+    SampleApplication easyMVPApplication = (SampleApplication) getApplication();
     List<Object> activityScopeModules = (getModules() != null) ? getModules() : new ArrayList<>();
     activityScopeModules.add(new ActivityModule(this));
     activityScopeGraph = easyMVPApplication.buildGraphWithAditionalModules(activityScopeModules);

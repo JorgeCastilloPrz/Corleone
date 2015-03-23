@@ -45,6 +45,7 @@ final class JobDispatcher {
   void dispatchJobsWithContext(String context) {
     RuntimeQueue queue = queueCache.getQueueForContext(context);
     queue.reset();
+    queue.bindQueueValues();
     dispatchCurrentJob(queue, context);
   }
 

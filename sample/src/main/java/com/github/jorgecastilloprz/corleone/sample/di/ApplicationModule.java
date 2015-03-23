@@ -18,7 +18,7 @@ package com.github.jorgecastilloprz.corleone.sample.di;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.view.LayoutInflater;
-import com.github.jorgecastilloprz.corleone.sample.CorleoneSampleApplication;
+import com.github.jorgecastilloprz.corleone.sample.SampleApplication;
 import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThread;
 import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThreadImpl;
 import dagger.Module;
@@ -30,7 +30,7 @@ import dagger.Provides;
  * @author Jorge Castillo Pérez
  */
 @Module(
-    injects = { CorleoneSampleApplication.class },
+    injects = { SampleApplication.class },
     library = true, complete = false) public class ApplicationModule {
 
   private final Context appContext;

@@ -68,6 +68,7 @@ public class JobDataModel {
     this.className = className;
     this.qualifiedName = qualifiedName;
     this.context = context;
+    this.params = new ArrayList<>();
   }
 
   public String getPreviousJobQualifiedName() {

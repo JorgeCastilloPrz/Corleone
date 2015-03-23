@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author Jorge Castillo Pérez
  */
-public class CorleoneSampleApplication extends Application {
+public class SampleApplication extends Application {
 
   private ObjectGraph objectGraph;
 
