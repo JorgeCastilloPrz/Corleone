@@ -99,6 +99,18 @@ Corleone.context("ObtainGames").provideParam("MyParamQualifier", paramValue);
 Params can be added by `provideParam()` method too. This method can be used to provide params from one `@Job` to another that will be executed later on. Sometimes 
 we need to use the output results from one task as the input ones for a new one. This would be the right way to do so.
 
+Multiple context calls
+----------------------
+
+You can provide params and keep the queue going by using the `allContexts(this)` method versions from inside a `@Job`:
+
+```java
+Corleone.allContexts(this).provideParam("MyParamQualifier", myParamValue);
+Corleone.allContexts(this).keepGoing();
+```
+
+If you do that, the method will be executed for all the contexts declared for the current job into its `@Rule` annotations.
+
 Dependencies
 ------------
 
