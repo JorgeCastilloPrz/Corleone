@@ -13,24 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.sample.domain.model;
-
-import org.parceler.Parcel;
+package com.github.jorgecastilloprz.corleone.sample.domain.usecases.callbacks;
 
 /**
  * @author Jorge Castillo Pérez
  */
-@Parcel public class LucasArtGame extends Game {
+public interface StoreGamesInDatabaseCallback {
 
-  public LucasArtGame() {
-    /* Required by parceler */
-  }
+  void onGamesStored();
 
-  public LucasArtGame(String imageUrl, String name, String releaseDate, String description) {
-    this.imageUrl = imageUrl;
-    this.name = name;
-    this.releaseDate = releaseDate;
-    this.author = "LucasArts";
-    this.description = description;
-  }
+  void onStoreGamesError();
 }

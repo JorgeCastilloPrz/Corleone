@@ -17,17 +17,18 @@ package com.github.jorgecastilloprz.corleone.sample.domain.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Mock game catalog.
  *
  * @author Jorge Castillo Pérez
  */
-public class LucasArtCatalog {
+public class LucasArtCatalog implements GameCatalog {
 
-  private List<LucasArtGame> games;
+  private List<Game> games;
 
-  public LucasArtCatalog() {
+  @Inject LucasArtCatalog() {
     initCatalog();
   }
 
@@ -196,7 +197,7 @@ public class LucasArtCatalog {
     games.add(lucasArtGame);
   }
 
-  public List<LucasArtGame> getGames() {
+  @Override public List<Game> getGames() {
     return games;
   }
 }

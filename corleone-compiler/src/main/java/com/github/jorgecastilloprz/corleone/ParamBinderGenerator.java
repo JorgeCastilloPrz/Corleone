@@ -40,7 +40,7 @@ class ParamBinderGenerator {
   JavaFile generate() {
     TypeSpec paramBinder = TypeSpec.classBuilder(
         NameUtils.getBinderClassName(jobDataModel.getClassName(), jobDataModel.getContext()))
-        .addModifiers(Modifier.FINAL)
+        .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
         .addSuperinterface(getInterfaceToImplement())
         .addMethod(generateBindParamsMethod())
         .build();

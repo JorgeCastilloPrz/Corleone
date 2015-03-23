@@ -15,22 +15,24 @@
  */
 package com.github.jorgecastilloprz.corleone.sample.domain.model;
 
+import java.util.List;
 import org.parceler.Parcel;
 
 /**
  * @author Jorge Castillo Pérez
  */
-@Parcel public class LucasArtGame extends Game {
+@Parcel public class SerializableGameCollection {
+  List<Game> games;
 
-  public LucasArtGame() {
-    /* Required by parceler */
+  public SerializableGameCollection() {
+    /* Needed for parceler */
   }
 
-  public LucasArtGame(String imageUrl, String name, String releaseDate, String description) {
-    this.imageUrl = imageUrl;
-    this.name = name;
-    this.releaseDate = releaseDate;
-    this.author = "LucasArts";
-    this.description = description;
+  public SerializableGameCollection(List<Game> games) {
+    this.games = games;
+  }
+
+  public List<Game> getGames() {
+    return games;
   }
 }

@@ -58,7 +58,7 @@ final class JobDispatcher {
     Object job = ClassUtils.buildClassInstance(jobClass);
     String executionMethodName = jobQueue.getCurrentJob().getExecutionMethodName();
 
-    ParamBinder jobParamBinder = obtainJobParamBinder(jobClass.getSimpleName(), context);
+    ParamBinder jobParamBinder = obtainJobParamBinder(jobClass.getCanonicalName(), context);
     jobParamBinder.bindParams(job);
 
     ThreadExecutor.getInstance().submit(job, executionMethodName);
@@ -69,15 +69,18 @@ final class JobDispatcher {
    * it should not be possible to happen, we are going to catch the exceptions and propagate it
    * to the final user.
    */
-  private ParamBinder obtainJobParamBinder(String classSimpleName, String context) {
+  private ParamBinder obtainJobParamBinder(String classQualifiedName, String context) {
     try {
-      return ParamBinderHelper.getBinderForClassNameAndContext(classSimpleName, context);
+      return ParamBinderHelper.getBinderForClassNameAndContext(classQualifiedName, context);
     } catch (ClassNotFoundException e) {
-      throw new UncaughtClassNotFoundException(classSimpleName);
+      throw new UncaughtClassNotFoundException(
+          NameUtils.getBinderClassName(classQualifiedName, context));
     } catch (IllegalAccessException e) {
-      throw new UncaughtIllegalAccessException(classSimpleName);
+      throw new UncaughtIllegalAccessException(
+          NameUtils.getBinderClassName(classQualifiedName, context));
     } catch (InstantiationException e) {
-      throw new UncaughtInstantiationException(classSimpleName);
+      throw new UncaughtInstantiationException(
+          NameUtils.getBinderClassName(classQualifiedName, context));
     }
   }
 

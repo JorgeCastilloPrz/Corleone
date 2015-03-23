@@ -20,17 +20,52 @@ import org.parceler.Parcel;
 /**
  * @author Jorge Castillo Pérez
  */
-@Parcel public class LucasArtGame extends Game {
+@Parcel
+public class Game {
 
-  public LucasArtGame() {
-    /* Required by parceler */
+  protected String imageUrl;
+  protected String name;
+  protected String releaseDate;
+  protected String author;
+  protected String description;
+
+  public String getImageUrl() {
+    return imageUrl;
   }
 
-  public LucasArtGame(String imageUrl, String name, String releaseDate, String description) {
+  public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
     this.name = name;
+  }
+
+  public String getReleaseDate() {
+    return releaseDate;
+  }
+
+  public void setReleaseDate(String releaseDate) {
     this.releaseDate = releaseDate;
-    this.author = "LucasArts";
+  }
+
+  public String getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(String author) {
+    this.author = author;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
     this.description = description;
   }
 }

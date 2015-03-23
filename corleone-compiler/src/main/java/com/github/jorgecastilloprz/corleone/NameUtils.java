@@ -25,8 +25,8 @@ class NameUtils {
   static final String RUNTIME_QUEUE_SUFFIX = "RuntimeQueue";
   static final String RUNTIME_QUEUES_PACKAGE = "com.github.jorgecastilloprz.corleone";
 
-  static String getBinderClassName(String jobDataModelClassName, String context) {
-    return jobDataModelClassName
+  static String getBinderClassName(String classQualifiedName, String context) {
+    return classQualifiedName
         + NameUtils.SEPARATOR
         + context
         + NameUtils.SEPARATOR

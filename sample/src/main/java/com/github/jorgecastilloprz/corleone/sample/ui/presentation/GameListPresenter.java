@@ -15,6 +15,7 @@
  */
 package com.github.jorgecastilloprz.corleone.sample.ui.presentation;
 
+import com.github.jorgecastilloprz.corleone.sample.domain.model.Game;
 import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtGame;
 import java.util.List;
 
@@ -25,12 +26,22 @@ public interface GameListPresenter extends Presenter {
 
   void setView(View view);
 
-  void onGameClicked(LucasArtGame game);
+  void onGameClicked(Game game);
+
+  List<Game> getCurrentGamesLoaded();
+
+  void restoreLoadedGames(List<Game> games);
 
   interface View {
 
-    void drawGames(List<LucasArtGame> games);
+    void drawGames(List<Game> games);
 
     void displayConnectionError();
+
+    void displayLoadGamesError();
+
+    void displayGamesStoredIndication();
+
+    void displayStoreGamesError();
   }
 }

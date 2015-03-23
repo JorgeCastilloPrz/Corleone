@@ -18,10 +18,16 @@ package com.github.jorgecastilloprz.corleone.sample.ui.presentation;
 import android.net.ConnectivityManager;
 import com.github.jorgecastilloprz.corleone.Corleone;
 import com.github.jorgecastilloprz.corleone.JobParams;
+import com.github.jorgecastilloprz.corleone.sample.domain.model.Game;
+import com.github.jorgecastilloprz.corleone.sample.domain.model.GameCatalog;
+import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtCatalog;
 import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtGame;
-import com.github.jorgecastilloprz.corleone.sample.domain.usecases.CorleoneContexts;
+import com.github.jorgecastilloprz.corleone.sample.domain.usecases.callbacks.GetGamesFromDataSourceCallback;
+import com.github.jorgecastilloprz.corleone.sample.domain.usecases.callbacks.StoreGamesInDatabaseCallback;
+import com.github.jorgecastilloprz.corleone.sample.domain.usecases.contexts.CorleoneContexts;
 import com.github.jorgecastilloprz.corleone.sample.domain.usecases.callbacks.CheckConnectionCallback;
 import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThread;
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -32,10 +38,14 @@ public class GameListPresenterImpl implements GameListPresenter {
   private View view;
   private ConnectivityManager connectivityManager;
   private MainThread mainThread;
+  private GameCatalog gameCatalog;
+  private List<Game> currentGamesLoaded;
 
-  @Inject GameListPresenterImpl(ConnectivityManager connectivityManager, MainThread mainThread) {
+  @Inject GameListPresenterImpl(ConnectivityManager connectivityManager, MainThread mainThread,
+      GameCatalog gameCatalog) {
     this.connectivityManager = connectivityManager;
     this.mainThread = mainThread;
+    this.gameCatalog = gameCatalog;
   }
 
   @Override public void setView(View view) {
@@ -50,11 +60,9 @@ public class GameListPresenterImpl implements GameListPresenter {
   }
 
   @Override public void resume() {
-
   }
 
   @Override public void pause() {
-
   }
 
   /**
@@ -63,12 +71,15 @@ public class GameListPresenterImpl implements GameListPresenter {
   private void dispatchObtainGamesTasks() {
     JobParams params = new JobParams().append("ConnectivityManager", connectivityManager)
         .append("MainThread", mainThread)
-        .append("CheckConnectionCallback", getCheckConnectionCallback());
+        .append("CheckConnectionCallback", getCheckConnectionCallback())
+        .append("GameCatalog", gameCatalog)
+        .append("GetGamesFromDataSourceCallback", getGamesFromDataSourceCallback())
+        .append("StoreGamesInDatabaseCallback", getStoreGamesInDatabaseCallback());
 
     Corleone.context(CorleoneContexts.OBTAIN_GAMES).dispatchJobs(params);
   }
 
-  private Object getCheckConnectionCallback() {
+  private CheckConnectionCallback getCheckConnectionCallback() {
     return new CheckConnectionCallback() {
       @Override public void onConnectionStatusChecked(boolean connectionAvailable) {
         if (!connectionAvailable) {
@@ -78,7 +89,40 @@ public class GameListPresenterImpl implements GameListPresenter {
     };
   }
 
-  @Override public void onGameClicked(LucasArtGame game) {
+  private GetGamesFromDataSourceCallback getGamesFromDataSourceCallback() {
+    return new GetGamesFromDataSourceCallback() {
+      @Override public void onGamesLoaded(List<Game> gamesLoaded) {
+        view.drawGames(gamesLoaded);
+        currentGamesLoaded = gamesLoaded;
+      }
 
+      @Override public void onLoadGamesError() {
+        view.displayLoadGamesError();
+      }
+    };
+  }
+
+  private StoreGamesInDatabaseCallback getStoreGamesInDatabaseCallback() {
+    return new StoreGamesInDatabaseCallback() {
+      @Override public void onGamesStored() {
+        view.displayGamesStoredIndication();
+      }
+
+      @Override public void onStoreGamesError() {
+        view.displayStoreGamesError();
+      }
+    };
+  }
+
+  @Override public void onGameClicked(Game game) {
+
+  }
+
+  @Override public List<Game> getCurrentGamesLoaded() {
+    return currentGamesLoaded;
+  }
+
+  @Override public void restoreLoadedGames(List<Game> games) {
+    view.drawGames(games);
   }
 }

@@ -86,7 +86,6 @@ class JobAnnotatedClass {
     for (VariableElement fieldElement : fieldElements) {
       if (fieldElement.getAnnotation(Param.class) != null) {
         paramElements.add(fieldElement);
-        return;
       }
     }
   }

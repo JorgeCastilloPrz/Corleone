@@ -36,80 +36,72 @@ public class ParamBinderGeneratorTest {
 
   @Test public void paramBinderGenerationTest() {
 
-    JavaFileObject source = JavaFileObjects.forSourceString(
-        "com.github.jorgecastilloprz.corleone.Test", Joiner.on('\n')
-        .join("package com.github.jorgecastilloprz.corleone;",
-            "import com.github.jorgecastilloprz.corleone.Corleone;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Job;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
-            "import com.github.jorgecastilloprz.corleone.annotations.Param;",
-            "@Job({",
-            "    @Rule(context = \"ObtainGames\"),",
-            "    @Rule(context = \"BookmarkGame\"),",
-            "    @Rule(context = \"CommentGame\")",
-            "})",
-            "public class Test {",
-            "\n",
-            "   @Param(\"MyString\") String providedString;",
-            "   @Execution",
-            "   public void run() {",
-            "       notifyNetworkStatus(true);",
-            "   }",
-            "   private void notifyNetworkStatus(final boolean networkAvailable) {",
-            "       //mainThread.post(new Runnable() {",
-            "       //    @Override",
-            "       //    public void run() {",
-            "       //      callback.notifyNetworkStatus(networkAvailable);",
-            "       //    }",
-            "      //});",
-            "      if (networkAvailable) {",
-            "          Corleone.allContexts(this).keepGoing();",
-            "      }",
-            "   }",
-            "}"));
+    JavaFileObject source =
+        JavaFileObjects.forSourceString("com.github.jorgecastilloprz.corleone.Test", Joiner.on('\n')
+                .join("package com.github.jorgecastilloprz.corleone;",
+                    "import com.github.jorgecastilloprz.corleone.Corleone;",
+                    "import com.github.jorgecastilloprz.corleone.annotations.Execution;",
+                    "import com.github.jorgecastilloprz.corleone.annotations.Job;",
+                    "import com.github.jorgecastilloprz.corleone.annotations.Rule;",
+                    "import com.github.jorgecastilloprz.corleone.annotations.Param;", "@Job({",
+                    "    @Rule(context = \"ObtainGames\"),",
+                    "    @Rule(context = \"BookmarkGame\"),",
+                    "    @Rule(context = \"CommentGame\")", "})", "public class Test {", "\n",
+                    "   @Param(\"MyString\") String providedString;",
+                    "   @Param(\"TestParam2\") String myTestParam2;",
+                    "   @Param(\"MyNewArgument\") String myNewArg;", "\n", "   @Execution",
+                    "   public void run() {", "       notifyNetworkStatus(true);", "   }",
+                    "   private void notifyNetworkStatus(final boolean networkAvailable) {",
+                    "       //mainThread.post(new Runnable() {", "       //    @Override",
+                    "       //    public void run() {",
+                    "       //      callback.notifyNetworkStatus(networkAvailable);",
+                    "       //    }", "      //});", "      if (networkAvailable) {",
+                    "          Corleone.allContexts(this).keepGoing();", "      }", "   }", "}"));
 
     JavaFileObject firstSourceGenerated = JavaFileObjects.forSourceString(
-        "com.github.jorgecastilloprz.corleone.Test$$ObtainGames$$ParamBinder", Joiner.on('\n')
-            .join("package com.github.jorgecastilloprz.corleone;",
-                "\n",
-                "import java.lang.Override;",
-                "\n",
-                "final class Test$$ObtainGames$$ParamBinder implements ParamBinder<Test> {",
-                "  @Override",
-                "  public void bindParams(Test target) {",
-                "    target.providedString = (java.lang.String) ParamBinderHelper.",
-                "            getParamsValueForQualifierAndContext(\"MyString\", \"ObtainGames\");",
-                "  }",
-                "}"));
+        "com.github.jorgecastilloprz.corleone.Test$$ObtainGames$$ParamBinder",
+        "package com.github.jorgecastilloprz.corleone;\n"
+            + "\n"
+            + "import java.lang.Override;\n"
+            + "\n"
+            + "public final class Test$$ObtainGames$$ParamBinder implements ParamBinder<Test> {\n"
+            + "  @Override\n"
+            + "  public void bindParams(Test target) {\n"
+            + "    target.providedString = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyString\",\"ObtainGames\");\n"
+            + "    target.myTestParam2 = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"TestParam2\",\"ObtainGames\");\n"
+            + "    target.myNewArg = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyNewArgument\",\"ObtainGames\");\n"
+            + "  }\n"
+            + "}");
 
     JavaFileObject secondSourceGenerated = JavaFileObjects.forSourceString(
-        "com.github.jorgecastilloprz.corleone.Test$$BookmarkGame$$ParamBinder", Joiner.on('\n')
-            .join("package com.github.jorgecastilloprz.corleone;",
-                "\n",
-                "import java.lang.Override;",
-                "\n",
-                "final class Test$$BookmarkGame$$ParamBinder implements ParamBinder<Test> {",
-                "  @Override",
-                "  public void bindParams(Test target) {",
-                "    target.providedString = (java.lang.String) ParamBinderHelper.",
-                "            getParamsValueForQualifierAndContext(\"MyString\", \"BookmarkGame\");",
-                "  }",
-                "}"));
+        "com.github.jorgecastilloprz.corleone.Test$$BookmarkGame$$ParamBinder",
+        "package com.github.jorgecastilloprz.corleone;\n"
+            + "\n"
+            + "import java.lang.Override;\n"
+            + "\n"
+            + "public final class Test$$BookmarkGame$$ParamBinder implements ParamBinder<Test> {\n"
+            + "  @Override\n"
+            + "  public void bindParams(Test target) {\n"
+            + "    target.providedString = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyString\",\"BookmarkGame\");\n"
+            + "    target.myTestParam2 = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"TestParam2\",\"BookmarkGame\");\n"
+            + "    target.myNewArg = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyNewArgument\",\"BookmarkGame\");\n"
+            + "  }\n"
+            + "}");
 
     JavaFileObject thirdSourceGenerated = JavaFileObjects.forSourceString(
-        "com.github.jorgecastilloprz.corleone.Test$$CommentGame$$ParamBinder", Joiner.on('\n')
-            .join("package com.github.jorgecastilloprz.corleone;",
-                "\n",
-                "import java.lang.Override;",
-                "\n",
-                "final class Test$$CommentGame$$ParamBinder implements ParamBinder<Test> {",
-                "  @Override",
-                "  public void bindParams(Test target) {",
-                "    target.providedString = (java.lang.String) ParamBinderHelper.",
-                "            getParamsValueForQualifierAndContext(\"MyString\", \"CommentGame\");",
-                "  }",
-                "}"));
+        "com.github.jorgecastilloprz.corleone.Test$$CommentGame$$ParamBinder",
+        "package com.github.jorgecastilloprz.corleone;\n"
+            + "\n"
+            + "import java.lang.Override;\n"
+            + "\n"
+            + "public final class Test$$CommentGame$$ParamBinder implements ParamBinder<Test> {\n"
+            + "  @Override\n"
+            + "  public void bindParams(Test target) {\n"
+            + "    target.providedString = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyString\",\"CommentGame\");\n"
+            + "    target.myTestParam2 = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"TestParam2\",\"CommentGame\");\n"
+            + "    target.myNewArg = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyNewArgument\",\"CommentGame\");\n"
+            + "  }\n"
+            + "}");
 
     Truth.ASSERT.about(javaSource())
         .that(source)

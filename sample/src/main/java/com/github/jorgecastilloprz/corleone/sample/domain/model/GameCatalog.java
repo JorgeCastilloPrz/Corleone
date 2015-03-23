@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.sample.domain.usecases;
+package com.github.jorgecastilloprz.corleone.sample.domain.model;
+
+import java.util.List;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public class CorleoneContexts {
-  public static final String OBTAIN_GAMES = "ObtainGames";
-  public static final String BOOKMARK_GAME = "BookmarkGame";
-  public static final String COMMENT_GAME = "CommentGame";
+public interface GameCatalog {
+
+  List<Game> getGames();
 }

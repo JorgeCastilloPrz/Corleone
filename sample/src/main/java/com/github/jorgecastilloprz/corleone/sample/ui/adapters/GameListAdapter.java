@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.github.jorgecastilloprz.corleone.sample.R;
+import com.github.jorgecastilloprz.corleone.sample.domain.model.Game;
 import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtGame;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
@@ -36,21 +37,20 @@ import java.util.List;
  *
  * @author Jorge Castillo Pérez
  */
-public class GameListRecyclerAdapter
-    extends RecyclerView.Adapter<GameListRecyclerAdapter.ViewHolder>
+public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHolder>
     implements View.OnClickListener {
 
-  private List<LucasArtGame> items = new ArrayList<>();
+  private List<Game> items = new ArrayList<>();
   private OnItemClickListener onItemClickListener;
 
-  public GameListRecyclerAdapter() {
+  public GameListAdapter() {
   }
 
   public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
     this.onItemClickListener = onItemClickListener;
   }
 
-  public void drawGames(List<LucasArtGame> games) {
+  public void drawGames(List<Game> games) {
     items = games;
     notifyDataSetChanged();
   }
@@ -62,15 +62,14 @@ public class GameListRecyclerAdapter
   }
 
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
-    LucasArtGame item = items.get(position);
-    holder.text.setText(item.getName());
+    Game item = items.get(position);
     holder.image.setImageBitmap(null);
     Picasso.with(holder.image.getContext()).load(item.getImageUrl()).into(holder.image);
     holder.itemView.setTag(item);
   }
 
   @Override public int getItemCount() {
-    return items.size();
+    return items != null ? items.size() : 0;
   }
 
   @Override public void onClick(final View v) {
@@ -90,7 +89,6 @@ public class GameListRecyclerAdapter
     public ViewHolder(View itemView) {
       super(itemView);
       image = (ImageView) itemView.findViewById(R.id.image);
-      text = (TextView) itemView.findViewById(R.id.text);
     }
   }
 

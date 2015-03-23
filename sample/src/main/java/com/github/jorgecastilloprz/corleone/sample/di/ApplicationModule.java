@@ -19,6 +19,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.view.LayoutInflater;
 import com.github.jorgecastilloprz.corleone.sample.SampleApplication;
+import com.github.jorgecastilloprz.corleone.sample.domain.model.GameCatalog;
+import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtCatalog;
 import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThread;
 import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThreadImpl;
 import dagger.Module;
@@ -53,5 +55,9 @@ import dagger.Provides;
 
   @Provides MainThread provideMainThread(MainThreadImpl mainThread) {
     return mainThread;
+  }
+
+  @Provides GameCatalog provideGameCatalog(LucasArtCatalog catalog) {
+    return catalog;
   }
 }
