@@ -16,7 +16,6 @@
 package com.github.jorgecastilloprz.corleone.sample.ui.presentation;
 
 import com.github.jorgecastilloprz.corleone.sample.domain.model.Game;
-import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtGame;
 import java.util.List;
 
 /**

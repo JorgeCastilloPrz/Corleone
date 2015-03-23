@@ -67,9 +67,12 @@ public class ParamBinderGeneratorTest {
             + "public final class Test$$ObtainGames$$ParamBinder implements ParamBinder<Test> {\n"
             + "  @Override\n"
             + "  public void bindParams(Test target) {\n"
-            + "    target.providedString = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyString\",\"ObtainGames\");\n"
-            + "    target.myTestParam2 = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"TestParam2\",\"ObtainGames\");\n"
-            + "    target.myNewArg = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyNewArgument\",\"ObtainGames\");\n"
+            + "    target.providedString = (java.lang.String) ParamBinderHelper"
+            + "       .getParamsValueForQualifierAndContext(\"MyString\",\"ObtainGames\");\n"
+            + "    target.myTestParam2 = (java.lang.String) ParamBinderHelper"
+            + "       .getParamsValueForQualifierAndContext(\"TestParam2\",\"ObtainGames\");\n"
+            + "    target.myNewArg = (java.lang.String) ParamBinderHelper"
+            + "       .getParamsValueForQualifierAndContext(\"MyNewArgument\",\"ObtainGames\");\n"
             + "  }\n"
             + "}");
 
@@ -82,9 +85,12 @@ public class ParamBinderGeneratorTest {
             + "public final class Test$$BookmarkGame$$ParamBinder implements ParamBinder<Test> {\n"
             + "  @Override\n"
             + "  public void bindParams(Test target) {\n"
-            + "    target.providedString = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyString\",\"BookmarkGame\");\n"
-            + "    target.myTestParam2 = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"TestParam2\",\"BookmarkGame\");\n"
-            + "    target.myNewArg = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyNewArgument\",\"BookmarkGame\");\n"
+            + "    target.providedString = (java.lang.String) ParamBinderHelper"
+            + "       .getParamsValueForQualifierAndContext(\"MyString\",\"BookmarkGame\");\n"
+            + "    target.myTestParam2 = (java.lang.String) ParamBinderHelper"
+            + "       .getParamsValueForQualifierAndContext(\"TestParam2\",\"BookmarkGame\");\n"
+            + "    target.myNewArg = (java.lang.String) ParamBinderHelper"
+            + "       .getParamsValueForQualifierAndContext(\"MyNewArgument\",\"BookmarkGame\");\n"
             + "  }\n"
             + "}");
 
@@ -97,9 +103,12 @@ public class ParamBinderGeneratorTest {
             + "public final class Test$$CommentGame$$ParamBinder implements ParamBinder<Test> {\n"
             + "  @Override\n"
             + "  public void bindParams(Test target) {\n"
-            + "    target.providedString = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyString\",\"CommentGame\");\n"
-            + "    target.myTestParam2 = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"TestParam2\",\"CommentGame\");\n"
-            + "    target.myNewArg = (java.lang.String) ParamBinderHelper.getParamsValueForQualifierAndContext(\"MyNewArgument\",\"CommentGame\");\n"
+            + "    target.providedString = (java.lang.String) ParamBinderHelper"
+            + "       .getParamsValueForQualifierAndContext(\"MyString\",\"CommentGame\");\n"
+            + "    target.myTestParam2 = (java.lang.String) ParamBinderHelper"
+            + "       .getParamsValueForQualifierAndContext(\"TestParam2\",\"CommentGame\");\n"
+            + "    target.myNewArg = (java.lang.String) ParamBinderHelper"
+            + "       .getParamsValueForQualifierAndContext(\"MyNewArgument\",\"CommentGame\");\n"
             + "  }\n"
             + "}");
 

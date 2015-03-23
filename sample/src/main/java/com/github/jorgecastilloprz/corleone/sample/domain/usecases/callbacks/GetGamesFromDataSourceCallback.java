@@ -16,7 +16,6 @@
 package com.github.jorgecastilloprz.corleone.sample.domain.usecases.callbacks;
 
 import com.github.jorgecastilloprz.corleone.sample.domain.model.Game;
-import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtGame;
 import java.util.List;
 
 /**
