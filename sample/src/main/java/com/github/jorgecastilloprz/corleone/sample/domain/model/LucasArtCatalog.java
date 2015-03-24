@@ -16,6 +16,7 @@
 package com.github.jorgecastilloprz.corleone.sample.domain.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -198,6 +199,7 @@ public class LucasArtCatalog implements GameCatalog {
   }
 
   @Override public List<Game> getGames() {
+    Collections.reverse(games);
     return games;
   }
 }

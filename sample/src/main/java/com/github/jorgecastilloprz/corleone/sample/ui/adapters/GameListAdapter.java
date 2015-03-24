@@ -22,10 +22,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
 import com.github.jorgecastilloprz.corleone.sample.R;
 import com.github.jorgecastilloprz.corleone.sample.domain.model.Game;
 import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtGame;
-import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.ViewHo
   @Override public void onBindViewHolder(ViewHolder holder, int position) {
     Game item = items.get(position);
     holder.image.setImageBitmap(null);
-    Picasso.with(holder.image.getContext()).load(item.getImageUrl()).into(holder.image);
+    Glide.with(holder.image.getContext()).load(item.getImageUrl()).centerCrop().into(holder.image);
     holder.itemView.setTag(item);
   }
 

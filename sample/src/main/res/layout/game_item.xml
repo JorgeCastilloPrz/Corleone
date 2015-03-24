@@ -8,6 +8,7 @@
     android:layout_marginTop="@dimen/cardview_topbottom_margin"
     >
 
+
   <android.support.v7.widget.CardView
       xmlns:card_view="http://schemas.android.com/apk/res-auto"
       android:id="@+id/card_view"
@@ -21,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:scaleType="centerCrop"
         />
 
   </android.support.v7.widget.CardView>
