@@ -17,9 +17,7 @@ package com.github.jorgecastilloprz.corleone.sample;
 
 import android.app.Application;
 import com.github.jorgecastilloprz.corleone.sample.di.ApplicationModule;
-import com.github.jorgecastilloprz.corleone.sample.di.PresenterModule;
 import dagger.ObjectGraph;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
