@@ -18,6 +18,8 @@ package com.github.jorgecastilloprz.corleone.sample.di;
 import android.app.Activity;
 import android.content.Context;
 import com.github.jorgecastilloprz.corleone.sample.di.qualifiers.ActivityContext;
+import com.github.jorgecastilloprz.corleone.sample.ui.activity.BaseActivity;
+import com.github.jorgecastilloprz.corleone.sample.ui.activity.GameDetailsActivity;
 import com.github.jorgecastilloprz.corleone.sample.ui.activity.MainActivity;
 import com.github.jorgecastilloprz.corleone.sample.ui.fragment.LucasGameListFragment;
 import dagger.Module;
@@ -30,7 +32,10 @@ import dagger.Provides;
  * @author Jorge Castillo Pérez
  */
 @Module(
-    injects = { MainActivity.class, LucasGameListFragment.class },
+    injects = {
+        MainActivity.class, LucasGameListFragment.class, GameDetailsActivity.class,
+        BaseActivity.class
+    },
     library = true, complete = false) public class ActivityModule {
 
   private final Activity activityContext;

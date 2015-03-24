@@ -25,6 +25,7 @@ import com.github.jorgecastilloprz.corleone.sample.domain.usecases.callbacks.Get
 import com.github.jorgecastilloprz.corleone.sample.domain.usecases.callbacks.StoreGamesInDatabaseCallback;
 import com.github.jorgecastilloprz.corleone.sample.domain.usecases.contexts.CorleoneContexts;
 import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThread;
+import com.github.jorgecastilloprz.corleone.sample.ui.navigation.Navigator;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -38,12 +39,14 @@ public class GameListPresenterImpl implements GameListPresenter {
   private MainThread mainThread;
   private GameCatalog gameCatalog;
   private List<Game> currentGamesLoaded;
+  private Navigator navigator;
 
   @Inject GameListPresenterImpl(ConnectivityManager connectivityManager, MainThread mainThread,
-      GameCatalog gameCatalog) {
+      GameCatalog gameCatalog, Navigator navigator) {
     this.connectivityManager = connectivityManager;
     this.mainThread = mainThread;
     this.gameCatalog = gameCatalog;
+    this.navigator = navigator;
   }
 
   @Override public void setView(View view) {
@@ -113,7 +116,7 @@ public class GameListPresenterImpl implements GameListPresenter {
   }
 
   @Override public void onGameClicked(Game game) {
-
+    navigator.displayGameDetails(game);
   }
 
   @Override public List<Game> getCurrentGamesLoaded() {
@@ -121,6 +124,7 @@ public class GameListPresenterImpl implements GameListPresenter {
   }
 
   @Override public void restoreLoadedGames(List<Game> games) {
+    currentGamesLoaded = games;
     view.drawGames(games);
   }
 }

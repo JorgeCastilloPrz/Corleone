@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import butterknife.ButterKnife;
 import com.github.jorgecastilloprz.corleone.sample.R;
+import com.github.jorgecastilloprz.corleone.sample.di.NavigationModule;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
@@ -18,7 +20,9 @@ public class MainActivity extends BaseActivity {
   }
 
   @Override protected List<Object> getModules() {
-    return null;
+    List<Object> modulesToAppend = new ArrayList<>();
+    modulesToAppend.add(NavigationModule.class);
+    return modulesToAppend;
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {

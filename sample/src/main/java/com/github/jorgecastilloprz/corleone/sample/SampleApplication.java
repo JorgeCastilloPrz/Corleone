@@ -59,15 +59,8 @@ public class SampleApplication extends Application {
   }
 
   private void initDependencyInjection() {
-    objectGraph = ObjectGraph.create(getApplicationModules().toArray());
+    objectGraph = ObjectGraph.create(new ApplicationModule(this));
     objectGraph.inject(this);
     objectGraph.injectStatics();
-  }
-
-  private List<Object> getApplicationModules() {
-    List<Object> applicationModules = new ArrayList<>();
-    applicationModules.add(new ApplicationModule(this));
-    applicationModules.add(new PresenterModule());
-    return applicationModules;
   }
 }

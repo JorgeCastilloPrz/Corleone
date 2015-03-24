@@ -86,18 +86,18 @@ public class LucasGameListFragment extends BaseFragment
   }
 
   @Override public void displayConnectionError() {
-    Toast.makeText(getActivity(), R.string.connection_error, Toast.LENGTH_LONG).show();
+    Toast.makeText(gameList.getContext(), R.string.connection_error, Toast.LENGTH_LONG).show();
   }
 
   @Override public void displayLoadGamesError() {
-    Toast.makeText(getActivity(), R.string.load_games_error, Toast.LENGTH_LONG).show();
+    Toast.makeText(gameList.getContext(), R.string.load_games_error, Toast.LENGTH_LONG).show();
   }
 
   @Override public void displayGamesStoredIndication() {
-    Toast.makeText(getActivity(), R.string.games_stored, Toast.LENGTH_LONG).show();
+    Toast.makeText(gameList.getContext(), R.string.games_stored, Toast.LENGTH_LONG).show();
   }
 
   @Override public void displayStoreGamesError() {
-    Toast.makeText(getActivity(), R.string.store_games_error, Toast.LENGTH_LONG).show();
+    Toast.makeText(gameList.getContext(), R.string.store_games_error, Toast.LENGTH_LONG).show();
   }
 }
