@@ -127,9 +127,21 @@ Testing
 Gradle dependency
 -----------------
 
+Since the project is still in a SNAPSHOT version of it, you will need to add the following repositories to your project to get the dependency resolved.
+
+```groovy
+repositories {
+  mavenCentral()
+  maven {
+    url "https://oss.sonatype.org/content/repositories/snapshots"
+  }
+}
+```
+
 ```groovy
 dependencies{
-    compile 'TBA'
+    compile 'com.github.jorgecastilloprz:corleone:0.1-SNAPSHOT'
+    provided 'com.github.jorgecastilloprz:corleone-compiler:0.1-SNAPSHOT'
 }
 ```
 
@@ -154,9 +166,22 @@ Maven dependency
 
 ```xml
 <dependency>
-    <TBA>
+  <groupId>com.github.jorgecastilloprz</groupId>
+  <artifactId>corleone</artifactId>
+  <version>0.1-SNAPSHOT</version>
+</dependency>
+<dependency>
+  <groupId>com.github.jorgecastilloprz</groupId>
+  <artifactId>corleone-compiler</artifactId>
+  <version>0.1-SNAPSHOT</version>
 </dependency>
 ```
+
+TODO
+----
+* Optimize Runtime phase a little bit more to avoid using reflection as much as possible.
+* Add ThreadPool initial configuration through annotations (or may be just conventional params).
+* Add dagger injection support.
 
 Attributions
 ------------
