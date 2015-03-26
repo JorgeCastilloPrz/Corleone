@@ -20,6 +20,6 @@ package com.github.jorgecastilloprz.corleone.sample.domain.usecases.contexts;
  */
 public class CorleoneContexts {
   public static final String OBTAIN_GAMES = "ObtainGames";
-  public static final String BOOKMARK_GAME = "BookmarkGame";
+  public static final String BOOKMARK_GAME = "ChangeBookmarkGameStatus";
   public static final String COMMENT_GAME = "CommentGame";
 }

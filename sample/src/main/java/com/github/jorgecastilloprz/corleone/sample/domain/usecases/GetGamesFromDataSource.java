@@ -61,7 +61,7 @@ import java.util.Random;
 
   private boolean hasToFail() {
     Random errorRandom = new Random();
-    return errorRandom.nextInt(10) >= 9;
+    return errorRandom.nextInt(100) >= 95;
   }
 
   private void notifyLoadingGamesError() {

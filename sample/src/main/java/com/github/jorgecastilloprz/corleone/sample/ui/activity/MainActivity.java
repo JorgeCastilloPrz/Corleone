@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.github.jorgecastilloprz.corleone.sample.R;
 import com.github.jorgecastilloprz.corleone.sample.di.NavigationModule;
 import java.util.ArrayList;
@@ -12,10 +12,12 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
+  @InjectView(R.id.toolbar) Toolbar toolbar;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    Toolbar toolbar = ButterKnife.findById(this, R.id.mainToolbar);
+    injectViews();
     setSupportActionBar(toolbar);
   }
 

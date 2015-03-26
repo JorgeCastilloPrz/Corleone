@@ -38,7 +38,6 @@ public abstract class BaseActivity extends ActionBarActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     injectDependencies();
-    injectViews();
   }
 
   /**
@@ -69,7 +68,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     inject(this);
   }
 
-  private void injectViews() {
+  protected void injectViews() {
     ButterKnife.inject(this);
   }
 }

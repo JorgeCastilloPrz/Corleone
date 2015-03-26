@@ -21,6 +21,8 @@ import android.view.LayoutInflater;
 import com.github.jorgecastilloprz.corleone.sample.SampleApplication;
 import com.github.jorgecastilloprz.corleone.sample.domain.model.GameCatalog;
 import com.github.jorgecastilloprz.corleone.sample.domain.model.LucasArtCatalog;
+import com.github.jorgecastilloprz.corleone.sample.ui.animator.ToolbarAnimator;
+import com.github.jorgecastilloprz.corleone.sample.ui.animator.ToolbarAnimatorImpl;
 import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThread;
 import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThreadImpl;
 import dagger.Module;
@@ -59,5 +61,9 @@ import dagger.Provides;
 
   @Provides GameCatalog provideGameCatalog(LucasArtCatalog catalog) {
     return catalog;
+  }
+
+  @Provides ToolbarAnimator provideToolbarAnimator(ToolbarAnimatorImpl animator) {
+    return animator;
   }
 }

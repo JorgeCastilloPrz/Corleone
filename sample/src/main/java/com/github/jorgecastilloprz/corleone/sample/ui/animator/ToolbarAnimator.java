@@ -13,25 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.corleone.sample.domain.model;
+package com.github.jorgecastilloprz.corleone.sample.ui.animator;
 
-import org.parceler.Parcel;
+import android.view.View;
 
 /**
+ * Abstract toolbar animators from view logic
+ *
  * @author Jorge Castillo Pérez
  */
-@Parcel public class LucasArtGame extends Game {
+public interface ToolbarAnimator {
 
-  public LucasArtGame() {
-    /* Required by parceler */
-  }
+  void hideInstantToolbar(final View toolbarView);
 
-  public LucasArtGame(String imageUrl, String name, String releaseDate, String description) {
-    this.imageUrl = imageUrl;
-    this.name = name;
-    this.releaseDate = releaseDate;
-    this.author = "LucasArts";
-    this.description = description;
-    this.id = name.hashCode() + hashCode();
-  }
+  void showDelayedSmoothToolbar(final View toolbarView);
+
+  void showSmoothToolbar(final View toolbarView);
+
+  void hideSmoothToolbar(final View toolbarView);
+
+  void attachToolbarAnimationListener(ToolbarAnimationListener listener);
 }

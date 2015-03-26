@@ -15,43 +15,62 @@
  */
 package com.github.jorgecastilloprz.corleone.sample.domain.usecases;
 
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import com.github.jorgecastilloprz.corleone.Corleone;
 import com.github.jorgecastilloprz.corleone.annotations.Execution;
 import com.github.jorgecastilloprz.corleone.annotations.Job;
 import com.github.jorgecastilloprz.corleone.annotations.Param;
 import com.github.jorgecastilloprz.corleone.annotations.Rule;
-import com.github.jorgecastilloprz.corleone.sample.domain.usecases.callbacks.CheckConnectionCallback;
+import com.github.jorgecastilloprz.corleone.sample.domain.usecases.callbacks.ChangeBookmarkStatusCallback;
 import com.github.jorgecastilloprz.corleone.sample.ui.mainthread.MainThread;
+import java.util.Random;
 
 /**
+ * Use case that mocks an action for bookmark / unbookmark a game
+ *
  * @author Jorge Castillo Pérez
  */
 @Job({
-    @Rule(context = "ObtainGames"), @Rule(context = "ChangeBookmarkGameStatus"),
-    @Rule(context = "CommentGame")
-}) public class CheckConnection {
+    @Rule(context = "ChangeBookmarkGameStatus", previousJob = CheckConnection.class)
+}) public class ChangeBookmarkGameStatus {
 
-  @Param("ConnectivityManager") ConnectivityManager connectivityManager;
+  @Param("GameId") int gameId;
   @Param("MainThread") MainThread mainThread;
-  @Param("CheckConnectionCallback") CheckConnectionCallback callback;
+  @Param("ChangeBookmarkStatusCallback") ChangeBookmarkStatusCallback callback;
 
   @Execution public void execute() {
-    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-    notifyNetworkStatus(isConnected);
+    mockInterestingTime();
+    if (hasToFail()) {
+      notifyBookmarkGameError();
+    } else {
+      notifyBookmarkStatusChanged();
+    }
   }
 
-  private void notifyNetworkStatus(final boolean networkAvailable) {
+  private void mockInterestingTime() {
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      //Empty
+    }
+  }
+
+  private boolean hasToFail() {
+    Random errorRandom = new Random();
+    return errorRandom.nextInt(100) >= 95;
+  }
+
+  private void notifyBookmarkGameError() {
     mainThread.post(new Runnable() {
       @Override public void run() {
-        callback.onConnectionStatusChecked(networkAvailable);
+        callback.onBookmarkError();
       }
     });
-    if (networkAvailable) {
-      //We let all the chains continue if connection is available
-      Corleone.allContexts(this).keepGoing();
-    }
+  }
+
+  private void notifyBookmarkStatusChanged() {
+    mainThread.post(new Runnable() {
+      @Override public void run() {
+        callback.onBookMarkStatusChanged();
+      }
+    });
   }
 }

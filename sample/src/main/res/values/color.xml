@@ -3,4 +3,5 @@
   <color name="fab_primary">#4CAF50</color>
   <color name="fab_primary_pressed">#388E3C</color>
   <color name="fab_ripple">#C8E6C9</color>
+  <color name="disabled_gray">#888</color>
 </resources>

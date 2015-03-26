@@ -20,14 +20,15 @@ import org.parceler.Parcel;
 /**
  * @author Jorge Castillo Pérez
  */
-@Parcel
-public class Game {
+@Parcel public class Game {
 
   protected String imageUrl;
   protected String name;
   protected String releaseDate;
   protected String author;
   protected String description;
+  protected int id;
+  protected boolean bookmarked;
 
   public String getImageUrl() {
     return imageUrl;
@@ -67,5 +68,17 @@ public class Game {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public boolean isBookmarked() {
+    return bookmarked;
+  }
+
+  public void setBookmarked(boolean bookmarked) {
+    this.bookmarked = bookmarked;
   }
 }

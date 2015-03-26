@@ -158,6 +158,12 @@ Maven dependency
 </dependency>
 ```
 
+Attributions
+------------
+* Processor code inspired by projects [butterknife][butterknife-github], [icepick][icepick-github], and some others.
+* Annotation processor logic and basic techniques inspired by [hannesdorfmann.com APT blog post][hannesdorfmann-post] too.
+* Some of the sample app code has been inspired by [@antoniolg][attributions-1] [MaterializeYourApp][attributions-2] sample application.
+
 Developed By
 ------------
 * Jorge Castillo Pérez - <jorge.castillo.prz@gmail.com>
@@ -188,3 +194,8 @@ License
  [testing-libs-1]: https://github.com/google/compile-testing
  [testing-libs-2]: https://github.com/google/truth
  [testing-libs-3]: http://junit.org/
+ [attributions-1]: https://github.com/antoniolg
+ [attributions-2]: https://github.com/antoniolg/MaterializeYourApp
+ [butterknife-github]: https://github.com/JakeWharton/butterknife
+ [icepick-github]: https://github.com/frankiesardo/icepick
+ [hannesdorfmann-post]: http://hannesdorfmann.com/annotation-processing/annotationprocessing101/

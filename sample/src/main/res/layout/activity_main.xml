@@ -2,16 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    >
 
   <fragment
       android:id="@+id/fragment"
       android:name="com.github.jorgecastilloprz.corleone.sample.ui.fragment.LucasGameListFragment"
       tools:layout="@layout/fragment_gamelist"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+      android:layout_height="match_parent"
+      />
 
-  <include
-      android:id="@+id/mainToolbar"
-      layout="@layout/toolbar"/>
+  <include layout="@layout/toolbar"/>
 </FrameLayout>
