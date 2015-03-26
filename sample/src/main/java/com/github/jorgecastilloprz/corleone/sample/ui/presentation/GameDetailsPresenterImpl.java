@@ -54,11 +54,23 @@ public class GameDetailsPresenterImpl implements GameDetailsPresenter {
     this.gameModel = game;
   }
 
+  @Override public Game getGameModel() {
+    return gameModel;
+  }
+
+  @Override public void restoreGameModel(Game game) {
+    gameModel = game;
+    initialize();
+  }
+
   @Override public void initialize() {
     view.setHeaderImage(gameModel.getImageUrl());
     view.setTitle(gameModel.getName());
     view.setDateAndAuthor(gameModel.getReleaseDate(), gameModel.getAuthor());
     view.setDescription(gameModel.getDescription());
+    if (gameModel.isBookmarked()) {
+      view.markGameAsFavourite();
+    }
   }
 
   @Override public void onUpNavigationClick() {
@@ -90,9 +102,11 @@ public class GameDetailsPresenterImpl implements GameDetailsPresenter {
       @Override public void onBookMarkStatusChanged() {
         if (gameModel.isBookmarked()) {
           view.unmarkGameAsFavourite();
+          view.displayUnfavMessage();
           gameModel.setBookmarked(false);
         } else {
           view.markGameAsFavourite();
+          view.displayFavouriteMessage();
           gameModel.setBookmarked(true);
         }
       }

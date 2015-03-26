@@ -48,8 +48,8 @@ public class GameDetailsActivity extends BaseActivity
     implements GameDetailsPresenter.View, ObservableScrollView.OnScrollChangedListener {
 
   private static final String GAME_EXTRA = "game_extra";
-  public static final String SHARED_IMAGE_EXTRA = "sharedImage";
-  public static final int MINIMUM_DELTAY_TO_MOVE_TOOLBAR = 35;
+  private static final String SHARED_IMAGE_EXTRA = "sharedImage";
+  private static final int MINIMUM_DELTA_TO_MOVE_TOOLBAR = 35;
 
   @Inject GameDetailsPresenter presenter;
   @Inject ToolbarAnimator toolbarAnimator;
@@ -102,7 +102,7 @@ public class GameDetailsActivity extends BaseActivity
   @Override
   public void onScrollChanged(ScrollView sv, int currentX, int currentY, int oldX, int oldY) {
     int deltaY = currentY - oldY;
-    if (Math.abs(deltaY) >= MINIMUM_DELTAY_TO_MOVE_TOOLBAR) {
+    if (Math.abs(deltaY) >= MINIMUM_DELTA_TO_MOVE_TOOLBAR) {
       if (deltaY < 0 && !isToolbarVisible) {
         toolbarAnimator.showSmoothToolbar(toolbar);
         isToolbarVisible = true;
@@ -163,11 +163,17 @@ public class GameDetailsActivity extends BaseActivity
 
   @Override public void markGameAsFavourite() {
     detailsFab.setImageResource(R.drawable.ic_fav_white);
+  }
+
+  @Override public void displayFavouriteMessage() {
     Toast.makeText(this, R.string.game_fav, Toast.LENGTH_LONG).show();
   }
 
   @Override public void unmarkGameAsFavourite() {
     detailsFab.setImageResource(R.drawable.ic_fav);
+  }
+
+  @Override public void displayUnfavMessage() {
     Toast.makeText(this, R.string.game_unfav, Toast.LENGTH_LONG).show();
   }
 
@@ -201,5 +207,16 @@ public class GameDetailsActivity extends BaseActivity
 
   @Override protected List<Object> getModules() {
     return null;
+  }
+
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putParcelable(GAME_EXTRA, Parcels.wrap(presenter.getGameModel()));
+  }
+
+  @Override protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    final Game game = Parcels.unwrap(savedInstanceState.getParcelable(GAME_EXTRA));
+    presenter.restoreGameModel(game);
   }
 }

@@ -26,6 +26,10 @@ public interface GameDetailsPresenter extends Presenter {
 
   void setGameModel(Game game);
 
+  Game getGameModel();
+
+  void restoreGameModel(Game game);
+
   void onUpNavigationClick();
 
   void onBookmarkButtonCick();
@@ -44,7 +48,11 @@ public interface GameDetailsPresenter extends Presenter {
 
     void markGameAsFavourite();
 
+    void displayFavouriteMessage();
+
     void unmarkGameAsFavourite();
+
+    void displayUnfavMessage();
 
     void displayChangeBookmarkStatusError();
 
