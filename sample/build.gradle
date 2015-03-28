@@ -40,10 +40,8 @@ dependencies {
   compile 'com.jakewharton:butterknife:6.1.0'
   compile "org.parceler:parceler-api:0.2.15"
   provided "org.parceler:parceler:0.2.15"
-//  compile 'com.github.jorgecastilloprz:corleone:0.1-SNAPSHOT'
-//  provided 'com.github.jorgecastilloprz:corleone-compiler:0.1-SNAPSHOT'
-  compile project(':corleone')
-  compile project(':corleone-compiler')
+  compile 'com.github.jorgecastilloprz:corleone:0.2-SNAPSHOT'
+  provided 'com.github.jorgecastilloprz:corleone-compiler:0.2-SNAPSHOT'
   compile 'com.android.support:support-v4:21.0.0'
   compile 'com.android.support:appcompat-v7:21.0.0'
   compile 'com.android.support:recyclerview-v7:21.0.0'

@@ -140,8 +140,8 @@ repositories {
 
 ```groovy
 dependencies{
-    compile 'com.github.jorgecastilloprz:corleone:0.1-SNAPSHOT'
-    provided 'com.github.jorgecastilloprz:corleone-compiler:0.1-SNAPSHOT'
+    compile 'com.github.jorgecastilloprz:corleone:0.2-SNAPSHOT'
+    provided 'com.github.jorgecastilloprz:corleone-compiler:0.2-SNAPSHOT'
 }
 ```
 
@@ -168,12 +168,12 @@ Maven dependency
 <dependency>
   <groupId>com.github.jorgecastilloprz</groupId>
   <artifactId>corleone</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.2-SNAPSHOT</version>
 </dependency>
 <dependency>
   <groupId>com.github.jorgecastilloprz</groupId>
   <artifactId>corleone-compiler</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.2-SNAPSHOT</version>
 </dependency>
 ```
 
