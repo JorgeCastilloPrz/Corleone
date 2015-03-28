@@ -38,7 +38,7 @@ class ThreadExecutor {
 
   private int corePoolSize = 3;
   private int maxPoolSize = 5;
-  private int keepAliveTime = 120;
+  private long keepAliveTime = 120;
   private TimeUnit timeUnit = TimeUnit.SECONDS;
   private BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
 
@@ -68,7 +68,7 @@ class ThreadExecutor {
     this.maxPoolSize = maxPoolSize;
   }
 
-  public void setKeepAliveTime(int keepAliveTime) {
+  public void setKeepAliveTime(long keepAliveTime) {
     this.keepAliveTime = keepAliveTime;
   }
 
@@ -76,7 +76,7 @@ class ThreadExecutor {
     this.timeUnit = timeUnit;
   }
 
-  public void setWorkQueue(BlockingQueue<Runnable> workQueue) {
+  public void setBlockingQueue(BlockingQueue<Runnable> workQueue) {
     this.workQueue = workQueue;
   }
 

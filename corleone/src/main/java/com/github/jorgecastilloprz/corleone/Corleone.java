@@ -20,6 +20,8 @@ import com.github.jorgecastilloprz.corleone.annotations.Rule;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Corleone gateway for external apps. Used to create instances of Corleone to work on defined
@@ -139,5 +141,18 @@ public class Corleone implements MultipleContexts {
     for (String context : contexts) {
       JobDispatcher.getInstance().keepGoing(context);
     }
+  }
+
+  /**
+   * We need to allow the user to setup the threadpool conditions if he needs to. He might not
+   * want to use the default ones.
+   */
+  public static void setupThreadPool(int corePoolSize, int maximumPoolSize, long keepAliveTime,
+      TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+    ThreadExecutor.getInstance().setCorePoolSize(corePoolSize);
+    ThreadExecutor.getInstance().setMaxPoolSize(maximumPoolSize);
+    ThreadExecutor.getInstance().setKeepAliveTime(keepAliveTime);
+    ThreadExecutor.getInstance().setTimeUnit(unit);
+    ThreadExecutor.getInstance().setBlockingQueue(workQueue);
   }
 }
