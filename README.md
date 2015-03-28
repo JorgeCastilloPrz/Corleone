@@ -127,7 +127,7 @@ Testing
 Gradle dependency
 -----------------
 
-Since the project is still in a SNAPSHOT version of it, you will need to add the following repositories to your project to get the dependency resolved.
+Since the project is still a snapshot, you will need to add the following repositories to your project to get the dependency resolved.
 
 ```groovy
 repositories {
