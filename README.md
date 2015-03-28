@@ -180,7 +180,6 @@ Maven dependency
 TODO
 ----
 * Add caching strategy to survive Android stupid lifecycle logic (Screen rotation etc).
-* Add ThreadPool initial configuration through annotations (or may be just conventional params).
 * Add dagger injection support.
 
 Attributions
