@@ -87,10 +87,4 @@ public final class ParamBinderHelper {
       throw new IllegalStateException("There are not provided params for context " + context);
     }
   }
-
-  static ParamBinder getBinderForClassNameAndContext(String classQualifiedName, String context)
-      throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-    String binderName = NameUtils.getBinderClassName(classQualifiedName, context);
-    return (ParamBinder) Class.forName(binderName).newInstance();
-  }
 }

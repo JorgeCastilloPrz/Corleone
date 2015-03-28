@@ -18,6 +18,10 @@ package com.github.jorgecastilloprz.corleone;
 import java.util.HashMap;
 
 /**
+ * Queues need to be accessed and instantiated during runtime. Reflection is very slow and we
+ * dont want to search for the classes everytime that {@link JobDispatcher} needs to use them.
+ * That is the main purpose of this cache.
+ *
  * @author Jorge Castillo Pérez
  */
 class RuntimeQueueCache {

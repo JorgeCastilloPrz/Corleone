@@ -15,10 +15,6 @@
  */
 package com.github.jorgecastilloprz.corleone;
 
-import com.github.jorgecastilloprz.corleone.exceptions.UncaughtClassNotFoundException;
-import com.github.jorgecastilloprz.corleone.exceptions.UncaughtIllegalAccessException;
-import com.github.jorgecastilloprz.corleone.exceptions.UncaughtInstantiationException;
-
 /**
  * @author Jorge Castillo Pérez
  */
@@ -26,9 +22,11 @@ final class JobDispatcher {
 
   static volatile JobDispatcher singleton = null;
   private RuntimeQueueCache queueCache;
+  private ParamBinderCache paramBinderCache;
 
   private JobDispatcher() {
     queueCache = new RuntimeQueueCache();
+    paramBinderCache = new ParamBinderCache();
   }
 
   static JobDispatcher getInstance() {
@@ -70,18 +68,7 @@ final class JobDispatcher {
    * to the final user.
    */
   private ParamBinder obtainJobParamBinder(String classQualifiedName, String context) {
-    try {
-      return ParamBinderHelper.getBinderForClassNameAndContext(classQualifiedName, context);
-    } catch (ClassNotFoundException e) {
-      throw new UncaughtClassNotFoundException(
-          NameUtils.getBinderClassName(classQualifiedName, context));
-    } catch (IllegalAccessException e) {
-      throw new UncaughtIllegalAccessException(
-          NameUtils.getBinderClassName(classQualifiedName, context));
-    } catch (InstantiationException e) {
-      throw new UncaughtInstantiationException(
-          NameUtils.getBinderClassName(classQualifiedName, context));
-    }
+    return paramBinderCache.getBinderForClassNameAndContext(classQualifiedName, context);
   }
 
   void keepGoing(String context) {
