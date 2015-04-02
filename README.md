@@ -1,4 +1,4 @@
-Corleone [![Build Status](https://travis-ci.org/JorgeCastilloPrz/Corleone.svg?branch=master)](https://travis-ci.org/JorgeCastilloPrz/Corleone)
+Corleone [![Build Status](https://travis-ci.org/JorgeCastilloPrz/Corleone.svg?branch=master)](https://travis-ci.org/JorgeCastilloPrz/Corleone) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Corleone-brightgreen.svg?style=flat)](http://www.android-arsenal.com/details/1/1690)
 ========
 
 ![Corleone image](/art/corleone.png)
